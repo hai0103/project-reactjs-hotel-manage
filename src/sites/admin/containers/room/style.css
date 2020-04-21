@@ -1,0 +1,15 @@
+.area-filter{
+    display: inline-flex;
+}
+
+.input-filter {
+    padding: 4px;
+    border: 1px solid #83AF9B;
+    border-radius: 3px;
+    height: 24px;
+}
+
+
+.header-table th h4{
+    margin: 4px 8px;
+}

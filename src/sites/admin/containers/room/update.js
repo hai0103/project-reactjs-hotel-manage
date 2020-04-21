@@ -42,9 +42,10 @@ class Update extends Component {
 
     componentDidMount() {
         this.setState({
-            price: this.props.listRoom[0].Price,
-            status: this.props.listRoom[0].Status,
-            statusStay: this.props.listRoom[0].StatusStay,
+            price: this.props.listRoom[0].price,
+            TypeRoomID: this.props.listRoom[0].typeroom.id,
+            status: this.props.listRoom[0].status,
+            statusStay: this.props.listRoom[0].statusStay,
         });
         this.getTypeRoomById();
         this.getAllTypeRoom();
@@ -126,7 +127,7 @@ class Update extends Component {
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Mã phòng</Text>
                                 <Input
-                                    value={this.props.listRoom[0].RoomNo}
+                                    value={this.props.listRoom[0].no}
                                     style={{ width: '70%' }}
                                     disabled
                                 />
@@ -134,7 +135,7 @@ class Update extends Component {
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Tên phòng</Text>
                                 <Input
-                                    value={this.props.listRoom[0].RoomName}
+                                    value={this.props.listRoom[0].name}
                                     style={{ width: '70%' }}
                                     disabled
                                 />
@@ -144,7 +145,7 @@ class Update extends Component {
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong={true} style={{ margin: '8px 0px', width: 130 }}>Số người</Text>
                                 <Input
-                                    value={this.props.listRoom[0].NoP}
+                                    value={this.props.listRoom[0].nop}
                                     style={{ width: '70%' }}
                                     disabled
                                 />
@@ -162,14 +163,14 @@ class Update extends Component {
                             </Col>
                         </Row>
                         <Row gutter={{ md: 12, lg: 12, xl: 12 }}>
-                            <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
+                            {/* <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong={true} style={{ margin: '8px 0px', width: 130 }}>Tầng</Text>
                                 <Input
                                     value={this.props.listRoom[0].Floor}
                                     style={{ width: '70%' }}
                                     disabled
                                 />
-                            </Col>
+                            </Col> */}
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Loại phòng</Text>
                                 {/* <Text style={{ margin: '8px 0px', width: 130 }}>{this.state.typeRoom.TypeRoomName}</Text> */}
@@ -183,7 +184,7 @@ class Update extends Component {
                                 >
                                     {this.state.listTypeRoom.map((item, index) =>
 
-                                        <Option value={item.TypeRoomID}>{item.TypeRoomName}</Option>
+                                        <Option value={item.id}>{item.description}</Option>
                                     )}
                                 </Select>
                             </Col>

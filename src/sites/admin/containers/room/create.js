@@ -85,7 +85,8 @@ class Add extends Component {
             no: RoomNo,
             name:RoomName,
             nop:NoP,
-            Floor,
+            numpeople: NoP,
+            // Floor,
             status:Status,
             statusStay: StatusStay,
             typeroomId: TypeRoomID

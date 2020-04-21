@@ -88,44 +88,44 @@ class Detail extends Component {
                         <Row gutter={{ md: 12, lg: 12, xl: 12 }}>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong={true} style={{ margin: '8px 0px', width: 130 }}>Mã phòng</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].RoomNo}</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].no}</Text>
 
                             </Col>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Tên phòng</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].RoomName}</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].name}</Text>
                             </Col>
                         </Row>
                         <Row gutter={{ md: 12, lg: 12, xl: 12 }}>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong={true} style={{ margin: '8px 0px', width: 130 }}>Số người</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].NoP}</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].nop}</Text>
 
                             </Col>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Giá</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].Price} VNĐ</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].price} VNĐ</Text>
                             </Col>
                         </Row>
                         <Row gutter={{ md: 12, lg: 12, xl: 12 }}>
-                            <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
+                            {/* <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong={true} style={{ margin: '8px 0px', width: 130 }}>Tầng</Text>
                                 <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].Floor}</Text>
 
-                            </Col>
+                            </Col> */}
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Loại phòng</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.state.typeRoom.TypeRoomName}</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].typeroom.description}</Text>
                             </Col>
                         </Row><Row gutter={{ md: 12, lg: 12, xl: 12 }}>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong={true} style={{ margin: '8px 0px', width: 130 }}>Trạng thái ở</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].StatusStay}</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].statusStay}</Text>
 
                             </Col>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Tình trạng phòng</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].Status}</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].status}</Text>
                             </Col>
                         </Row>
                     </Card>

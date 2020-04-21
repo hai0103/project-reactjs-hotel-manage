@@ -1,11 +1,11 @@
 import React from 'react'
 import roomProvider from '../../../../data-access/room-provider'
 import typeRoomProvider from '../../../../data-access/typeroom-provider'
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import './style.css'
 import moment from 'moment';
 import ColumnResizer from "react-column-resizer";
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import ModalAddRoom from './create';
 import ModalDeleteRoom from './delete';
@@ -25,8 +25,8 @@ import {
     Spin
 } from 'antd';
 
-const {Column} = Table;
-const {Option} = Select;
+const { Column } = Table;
+const { Option } = Select;
 
 
 class Room extends React.Component {
@@ -71,7 +71,7 @@ class Room extends React.Component {
     }
 
     getAllRoom() {
-        this.setState({progress: true})
+        this.setState({ progress: true })
         roomProvider.getAll().then(res => {
             console.log(res)
             if (res.code == 0) {
@@ -84,10 +84,10 @@ class Room extends React.Component {
                     data: []
                 })
             }
-            this.setState({progress: false})
+            this.setState({ progress: false })
         }).catch(e => {
             console.log(e)
-            this.setState({progress: false})
+            this.setState({ progress: false })
         })
     }
 
@@ -98,7 +98,8 @@ class Room extends React.Component {
                 this.setState({
                     listTypeRoom: res.data,
                 }, () => {
-                    console.log('aaaaaa',this.state.listTypeRoom)})
+                    console.log('aaaaaa', this.state.listTypeRoom)
+                })
             } else {
                 this.setState({
                     listTypeRoom: []
@@ -112,7 +113,7 @@ class Room extends React.Component {
     }
 
     getRoomByPage() {
-        this.setState({progress: true})
+        this.setState({ progress: true })
         let param = {
             pagesize: this.state.size,
             pagenumber: this.state.page
@@ -120,13 +121,13 @@ class Room extends React.Component {
         roomProvider.getByPage(param).then(res => {
             console.log(res)
             this.setState({
-                data: res.data.Results,
-                total: res.data.TotalNumberOfRecords,
+                data: res.data.content,
+                total: res.data.totalElements,
             })
-            this.setState({progress: false})
+            this.setState({ progress: false })
         }).catch(e => {
             console.log(e)
-            this.setState({progress: false})
+            this.setState({ progress: false })
         })
     }
 
@@ -145,23 +146,24 @@ class Room extends React.Component {
         } = this.state;
 
         let param = {
-            searchTerm,
-            sortColumn,
-            sortOrder,
-            pageNumber: page + 1,
-            pageSize: 100,
+            // searchTerm,
+            // sortColumn,
+            // sortOrder,
+            page: page,
+            size: size,
             roomNo,
             roomTypeId: typeRoomId ? typeRoomId : '',
             status,
             statusStay,
-            nop,
+            // nop,
         };
         console.log(param);
-        roomProvider.searchAndPage(param).then(res => {
+        // roomProvider.searchAndPage(param).then(res => {
+        roomProvider.searchAndPaging(param).then(res => {
             console.log(res)
             this.setState({
                 data: res.data,
-                total: res.data.length,
+                total: res.data.totalElements,
             })
         }).catch(e => {
             console.log(e)
@@ -171,7 +173,7 @@ class Room extends React.Component {
 
     closeModal() {
         this.loadPage();
-        this.setState({openCreateModal: false});
+        this.setState({ openCreateModal: false });
     }
 
     modalCreateUpdate(item) {
@@ -295,7 +297,7 @@ class Room extends React.Component {
 
         const rowSelection = {
             onChange: (selectedRowKeys, selectedRows) => {
-                this.setState({listRoomSelected: selectedRows});
+                this.setState({ listRoomSelected: selectedRows });
                 console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
             },
             getCheckboxProps: record => ({
@@ -324,10 +326,10 @@ class Room extends React.Component {
                 <div className="panel-top">
                     <div className="toolbar">
                         <div className="toolbar-item add black-tooltip-main " data-toggle="tooltip"
-                             data-placement="bottom" title="Ctrl + 1" id="sub-open"
-                             onClick={() => this.setState({showModalAdd: true})}
+                            data-placement="bottom" title="Ctrl + 1" id="sub-open"
+                            onClick={() => this.setState({ showModalAdd: true })}
                         >
-                            <span className="toolbar-icon icon-add"/>
+                            <span className="toolbar-icon icon-add" />
                             <span className="toolbar-text">Thêm mới</span>
 
                         </div>
@@ -342,10 +344,10 @@ class Room extends React.Component {
                             title="Ctrl + 3"
                             onClick={() => {
                                 if (this.state.listRoomSelected.length == 1)
-                                    this.setState({showModalDetail: true})
+                                    this.setState({ showModalDetail: true })
                             }}
                         >
-                            <span className="toolbar-icon icon-view"/>
+                            <span className="toolbar-icon icon-view" />
                             <span>Xem</span>
                         </div>
                         <div
@@ -355,10 +357,10 @@ class Room extends React.Component {
                             title="Ctrl + 3"
                             onClick={() => {
                                 if (this.state.listRoomSelected.length == 1)
-                                    this.setState({showModalUpdate: true})
+                                    this.setState({ showModalUpdate: true })
                             }}
                         >
-                            <span className="toolbar-icon icon-edit"/>
+                            <span className="toolbar-icon icon-edit" />
                             <span>Sửa</span>
                         </div>
                         <div
@@ -368,17 +370,17 @@ class Room extends React.Component {
                             title="Ctrl + 3"
                             onClick={() => {
                                 if (this.state.listRoomSelected.length != 0)
-                                    this.setState({showModalDelete: true})
+                                    this.setState({ showModalDelete: true })
                             }}
                         >
-                            <span className="toolbar-icon icon-delete"/>
+                            <span className="toolbar-icon icon-delete" />
                             <span>Xóa</span>
                         </div>
                         <div className="toolbar-item f5 black-tooltip-main" data-toggle="tooltip"
-                             data-placement="bottom" title="Ctrl + R"
-                             onClick={() => this.loadPage()}
+                            data-placement="bottom" title="Ctrl + R"
+                            onClick={() => this.loadPage()}
                         >
-                            <span className="toolbar-icon icon-refresh"/>
+                            <span className="toolbar-icon icon-refresh" />
                             <span>Nạp</span>
                         </div>
                     </div>
@@ -387,28 +389,28 @@ class Room extends React.Component {
                 <div className="filter-data">
                     <Card>
 
-                        <Row gutter={{md: 24, lg: 24, xl: 24}}>
-                            <Col md={12} sm={12} xs={24} style={{display: 'inline-flex'}}>
-                                <Typography style={{margin: '8px 0px', width: 130}}>Mã phòng</Typography>
+                        <Row gutter={{ md: 24, lg: 24, xl: 24 }}>
+                            <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
+                                <Typography style={{ margin: '8px 0px', width: 130 }}>Mã phòng</Typography>
                                 <Input
                                     allowClear
                                     value={this.state.roomNo}
                                     placeholder="Nhập mã phòng"
-                                    style={{width: '70%'}}
+                                    style={{ width: '70%' }}
                                     onChange={(val) => {
-                                        this.setState({roomNo: val.target.value})
+                                        this.setState({ roomNo: val.target.value })
                                     }}
                                 />
                             </Col>
-                            <Col md={12} sm={12} xs={24} style={{display: 'inline-flex'}}>
-                                <Typography style={{margin: '8px 0px', width: 130}}>Loại phòng</Typography>
+                            <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
+                                <Typography style={{ margin: '8px 0px', width: 130 }}>Loại phòng</Typography>
                                 <Select
                                     allowClear
                                     defaultValue=""
                                     value={this.state.typeRoomId}
-                                    style={{width: '70%'}}
+                                    style={{ width: '70%' }}
                                     onChange={(val) => {
-                                        this.setState({typeRoomId: val})
+                                        this.setState({ typeRoomId: val })
                                     }}>
                                     {this.state.listTypeRoom.map((item, index) =>
                                         <Option value={item.id}>{item.description}</Option>
@@ -421,30 +423,30 @@ class Room extends React.Component {
                             lg: 24,
                             xl: 24
                         }}>
-                            <Col md={12} sm={12} xs={24} style={{display: 'inline-flex'}}>
-                                <Typography style={{margin: '8px 0px', width: 130}}>Trạng thái ở</Typography>
+                            <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
+                                <Typography style={{ margin: '8px 0px', width: 130 }}>Trạng thái ở</Typography>
                                 <Select
                                     allowClear
                                     defaultValue=""
                                     value={this.state.statusStay}
-                                    style={{width: '70%'}}
+                                    style={{ width: '70%' }}
                                     onChange={(val, e) => {
-                                        this.setState({statusStay: val})
+                                        this.setState({ statusStay: val })
                                     }}
                                 >
                                     <Option value="tr">Trống</Option>
                                     <Option value="c">Đã có người</Option>
                                 </Select>
                             </Col>
-                            <Col md={12} sm={24} xs={24} style={{display: 'inline-flex'}}>
-                                <Typography style={{margin: '8px 0px', width: 130}}>Tình trạng phòng</Typography>
+                            <Col md={12} sm={24} xs={24} style={{ display: 'inline-flex' }}>
+                                <Typography style={{ margin: '8px 0px', width: 130 }}>Tình trạng phòng</Typography>
                                 <Select
                                     allowClear
                                     defaultValue=""
                                     value={this.state.status}
-                                    style={{width: '70%'}}
+                                    style={{ width: '70%' }}
                                     onChange={(val, e) => {
-                                        this.setState({status: val})
+                                        this.setState({ status: val })
                                     }}
                                 >
                                     <Option value="s">Sạch</Option>
@@ -460,7 +462,7 @@ class Room extends React.Component {
                         }}>
                             <Col md={12} sm={24} xs={24}>
                                 <Button
-                                    style={{margin: '8px 0px'}}
+                                    style={{ margin: '8px 0px' }}
                                     onClick={() => this.handleSearch()}
                                 >
                                     Tìm kiếm
@@ -484,63 +486,61 @@ class Room extends React.Component {
                                     pageSize: size,
                                     total: total,
                                     onShowSizeChange: (current, pageSize) => {
-                                        this.setState({size: pageSize, page: current - 1}, () => this.getRoomByPage())
+                                        this.setState({ size: pageSize, page: current - 1 }, () => this.getRoomByPage())
                                     },
                                     onChange: (value) => {
                                         console.log(value)
-                                        this.setState({page: value - 1}, () => this.getRoomByPage())
+                                        this.setState({ page: value - 1 }, () => this.getRoomByPage())
                                     }
                                 }
                             }
                             bordered
-                            scroll={{y: 400}}
+                            scroll={{ y: 400 }}
                         >
                             <Column title="STT" key="index" width={90} align={'Center'}
-                                    render={(text, record, index) => (this.state.page) * this.state.size + index + 1}
+                                render={(text, record, index) => (this.state.page) * this.state.size + index + 1}
                             />
-                            <Column title="Mã phòng" dataIndex="RoomNo" key="RoomNo" align={'Left'}
+                            <Column title="Mã phòng" dataIndex="no" key="no" align={'Left'}
+                                render={(text, record, index) => text}
+                            />
+                            <Column title="Tên phòng" dataIndex="name" key="name" align={'Left'}
+                                render={(text, record, index) => text}
+                            />
+                            <Column title="Số người" dataIndex="nop" key="nop" align={'Center'}
+                                render={(text, record, index) => text}
+                            />
+                            {/* <Column title="Tầng" dataIndex="Floor" key="Floor" align={'Center'}
                                     render={(text, record, index) => text}
-                            />
-                            <Column title="Tên phòng" dataIndex="RoomName" key="RoomName" align={'Left'}
-                                    render={(text, record, index) => text}
-                            />
-                            {/* <Column title="Số người" dataIndex="NoP" key="NoP" align={'Center'}
-                            render={(text, record, index) => text}
-                        /> */}
-                            <Column title="Tầng" dataIndex="Floor" key="Floor" align={'Center'}
-                                    render={(text, record, index) => text}
-                            />
+                            /> */}
                             {/* <Column title="Giá" dataIndex="Price" key="Price" align={'Center'}
                             render={(text, record, index) => text}
                         /> */}
-                            <Column title="Loại phòng" dataIndex="TypeRoomID" key="TypeRoomID" align={'Left'}
-                                    render={(text, record, index) =>
-                                        this.state.listTypeRoom.filter(v => v.TypeRoomID == text)[0].TypeRoomName
-                                    }
+                            <Column title="Loại phòng" dataIndex="typeroom" key="typeroom" align={'Left'}
+                                render={(text, record, index) => record.typeroom.description}
                             />
-                            <Column title="Trạng thái ở" dataIndex="Status" key="Status" align={'Left'}
-                                    render={(text, record, index) => text
+                            <Column title="Trạng thái ở" dataIndex="status" key="status" align={'Left'}
+                                render={(text, record, index) => text
 
-                                    }
+                                }
                             />
-                            <Column title="Tình trạng phòng" dataIndex="StatusStay" key="StatusStay" align={'Left'}
-                                    render={(text, record, index) => text
+                            <Column title="Tình trạng phòng" dataIndex="statusStay" key="statusStay" align={'Left'}
+                                render={(text, record, index) => text
 
-                                    }
+                                }
                             />
                         </Table>
                     </Spin>
 
                     {this.state.showModalAdd && <ModalAddRoom loadPage={() => this.loadPage()}
-                                                              closeModal={() => this.setState({showModalAdd: false})}/>}
+                        closeModal={() => this.setState({ showModalAdd: false })} />}
                     {this.state.showModalDelete &&
-                    <ModalDeleteRoom listRoom={this.state.listRoomSelected} loadPage={() => this.loadPage()}
-                                     closeModal={() => this.setState({showModalDelete: false})}/>}
+                        <ModalDeleteRoom listRoom={this.state.listRoomSelected} loadPage={() => this.loadPage()}
+                            closeModal={() => this.setState({ showModalDelete: false })} />}
                     {this.state.showModalDetail && <ModalDetailRoom listRoom={this.state.listRoomSelected}
-                                                                    closeModal={() => this.setState({showModalDetail: false})}/>}
+                        closeModal={() => this.setState({ showModalDetail: false })} />}
                     {this.state.showModalUpdate &&
-                    <ModalUpdateRoom listRoom={this.state.listRoomSelected} loadPage={() => this.loadPage()}
-                                     closeModal={() => this.setState({showModalUpdate: false})}/>}
+                        <ModalUpdateRoom listRoom={this.state.listRoomSelected} loadPage={() => this.loadPage()}
+                            closeModal={() => this.setState({ showModalUpdate: false })} />}
                 </div>
 
             </div>

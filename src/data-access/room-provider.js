@@ -3,6 +3,7 @@ import stringUtils from '../resources/stringUtils';
 import constants from '../resources/strings';
 import datacacheProvider from './datacache-provider';
 import clientUtils from '../utils/client-utils';
+import {stringify} from 'querystring';
 
 var md5 = require('md5');
 export default {
@@ -56,6 +57,17 @@ export default {
             (param.pageSize ? '&pageSize=' + param.pageSize : '&pageSize=' + 10) +
             '&roomNo=' + param.roomNo + '&roomTypeId=' + param.roomTypeId + '&status=' + param.status +
             '&statusStay=' + param.statusStay + '&nop=' + param.nop
+        return new Promise((resolve, reject) => {
+            clientUtils.requestApi("get", constants.api.room.searchAndPage + parameters, {}).then(x => {
+                resolve(x);
+            }).catch(e => {
+                reject(e);
+            })
+        })
+    },
+
+    searchAndPaging(param) {
+        let parameters = `?${stringify(param)}`
         return new Promise((resolve, reject) => {
             clientUtils.requestApi("get", constants.api.room.searchAndPage + parameters, {}).then(x => {
                 resolve(x);

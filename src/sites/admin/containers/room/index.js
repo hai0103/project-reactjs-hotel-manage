@@ -66,28 +66,17 @@ class Room extends React.Component {
     }
 
     loadPage() {
-        this.getRoomByPage();
-        this.getAllTypeRoom();
-    }
+        this.setState({
+            roomNo: '',
+            typeRoomId: '',
+            status: '',
+            statusStay: '',
+            page: 0,
+            size: 10
+        }, () => {
+            this.getRoomOnSearch();
+            this.getAllTypeRoom();
 
-    getAllRoom() {
-        this.setState({ progress: true })
-        roomProvider.getAll().then(res => {
-            console.log(res)
-            if (res.code == 0) {
-                this.setState({
-                    data: res.data,
-                    total: res.data.length
-                })
-            } else {
-                this.setState({
-                    data: []
-                })
-            }
-            this.setState({ progress: false })
-        }).catch(e => {
-            console.log(e)
-            this.setState({ progress: false })
         })
     }
 
@@ -112,30 +101,9 @@ class Room extends React.Component {
         })
     }
 
-    getRoomByPage() {
+    getRoomOnSearch() {
         this.setState({ progress: true })
-        let param = {
-            pagesize: this.state.size,
-            pagenumber: this.state.page
-        }
-        roomProvider.getByPage(param).then(res => {
-            console.log(res)
-            this.setState({
-                data: res.data.content,
-                total: res.data.totalElements,
-            })
-            this.setState({ progress: false })
-        }).catch(e => {
-            console.log(e)
-            this.setState({ progress: false })
-        })
-    }
-
-    handleSearch() {
         let {
-            searchTerm,
-            sortColumn,
-            sortOrder,
             page,
             size,
             roomNo,
@@ -145,28 +113,26 @@ class Room extends React.Component {
             nop,
         } = this.state;
 
-        let param = {
-            // searchTerm,
-            // sortColumn,
-            // sortOrder,
+        let payload = {
             page: page,
             size: size,
             roomNo,
             roomTypeId: typeRoomId ? typeRoomId : '',
             status,
             statusStay,
-            // nop,
         };
-        console.log(param);
-        // roomProvider.searchAndPage(param).then(res => {
-        roomProvider.searchAndPaging(param).then(res => {
+        console.log(payload);
+        roomProvider.searchAndPaging(payload).then(res => {
             console.log(res)
             this.setState({
-                data: res.data,
+                data: res.data.content,
                 total: res.data.totalElements,
+            }, () => {
+                this.setState({ progress: false })
             })
         }).catch(e => {
             console.log(e)
+            this.setState({ progress: false })
         })
     }
 
@@ -190,101 +156,6 @@ class Room extends React.Component {
         }
     }
 
-    handleChangeFilter(event, action) {
-        if (action == 1) {
-            this.setState({
-                page: 0,
-                name: event.target.value
-            }, () => {
-                if (this.clearTimeOutAffterRequest) {
-                    try {
-                        clearTimeout(this.clearTimeOutAffterRequest);
-
-                    } catch (error) {
-
-                    }
-                }
-                this.clearTimeOutAffterRequest = setTimeout(() => {
-                    this.loadPage()
-                }, 500)
-            })
-        }
-
-        if (action == 2) {
-            this.setState({
-                page: 0,
-                intervalTime: event.target.value
-            }, () => {
-                if (this.clearTimeOutAffterRequest) {
-                    try {
-                        clearTimeout(this.clearTimeOutAffterRequest);
-
-                    } catch (error) {
-
-                    }
-                }
-                this.clearTimeOutAffterRequest = setTimeout(() => {
-                    this.loadPage()
-                }, 500)
-            })
-        }
-
-        if (action == 3) {
-            this.setState({
-                page: 0,
-                createdUser: event.target.value
-            }, () => {
-                if (this.clearTimeOutAffterRequest) {
-                    try {
-                        clearTimeout(this.clearTimeOutAffterRequest);
-
-                    } catch (error) {
-
-                    }
-                }
-                this.clearTimeOutAffterRequest = setTimeout(() => {
-                    this.loadPage()
-                }, 500)
-            })
-        }
-        if (action == 4) {
-            this.setState({
-                page: 0,
-                fromDate: moment(event._d).format('YYYY-MM-DD')
-            }, () => {
-                if (this.clearTimeOutAffterRequest) {
-                    try {
-                        clearTimeout(this.clearTimeOutAffterRequest);
-
-                    } catch (error) {
-
-                    }
-                }
-                this.clearTimeOutAffterRequest = setTimeout(() => {
-                    this.loadPage()
-                }, 500)
-            })
-        }
-        if (action == 5) {
-            this.setState({
-                page: 0,
-                toDate: moment(event._d).format('YYYY-MM-DD')
-            }, () => {
-                if (this.clearTimeOutAffterRequest) {
-                    try {
-                        clearTimeout(this.clearTimeOutAffterRequest);
-
-                    } catch (error) {
-
-                    }
-                }
-                this.clearTimeOutAffterRequest = setTimeout(() => {
-                    this.loadPage()
-                }, 500)
-            })
-        }
-    }
-
     showModalDelete(item) {
         this.setState({
             confirmDialog: true,
@@ -292,6 +163,29 @@ class Room extends React.Component {
         })
     }
 
+    renderStatus = (status) => {
+        switch (status) {
+            case 'CLEAN':
+                return 'Sạch';
+            case 'DIRTY':
+                return 'Bẩn';
+            case 'CLEANING':
+                return 'Đang dọn';
+            default:
+                return '';
+        }
+    }
+
+    renderStatusStay = (status) => {
+        switch (status) {
+            case 'EMPTY':
+                return 'Trống';
+            case 'USING':
+                return 'Đã có người';
+            default:
+                return '';
+        }
+    }
 
     render() {
 
@@ -381,7 +275,7 @@ class Room extends React.Component {
                             onClick={() => this.loadPage()}
                         >
                             <span className="toolbar-icon icon-refresh" />
-                            <span>Nạp</span>
+                            <span>Refresh</span>
                         </div>
                     </div>
                 </div>
@@ -434,8 +328,8 @@ class Room extends React.Component {
                                         this.setState({ statusStay: val })
                                     }}
                                 >
-                                    <Option value="tr">Trống</Option>
-                                    <Option value="c">Đã có người</Option>
+                                    <Option value="EMPTY">Trống</Option>
+                                    <Option value="USING">Đã có người</Option>
                                 </Select>
                             </Col>
                             <Col md={12} sm={24} xs={24} style={{ display: 'inline-flex' }}>
@@ -449,9 +343,9 @@ class Room extends React.Component {
                                         this.setState({ status: val })
                                     }}
                                 >
-                                    <Option value="s">Sạch</Option>
-                                    <Option value="b">Bẩn</Option>
-                                    <Option value="ang">Đang dọn</Option>
+                                    <Option value="CLEAN">Sạch</Option>
+                                    <Option value="DIRTY">Bẩn</Option>
+                                    <Option value="CLEANING">Đang dọn</Option>
                                 </Select>
                             </Col>
                         </Row>
@@ -463,7 +357,7 @@ class Room extends React.Component {
                             <Col md={12} sm={24} xs={24}>
                                 <Button
                                     style={{ margin: '8px 0px' }}
-                                    onClick={() => this.handleSearch()}
+                                    onClick={() => this.getRoomOnSearch()}
                                 >
                                     Tìm kiếm
                                 </Button>
@@ -486,11 +380,11 @@ class Room extends React.Component {
                                     pageSize: size,
                                     total: total,
                                     onShowSizeChange: (current, pageSize) => {
-                                        this.setState({ size: pageSize, page: current - 1 }, () => this.getRoomByPage())
+                                        this.setState({ size: pageSize, page: current - 1 }, () => this.getRoomOnSearch())
                                     },
                                     onChange: (value) => {
                                         console.log(value)
-                                        this.setState({ page: value - 1 }, () => this.getRoomByPage())
+                                        this.setState({ page: value - 1 }, () => this.getRoomOnSearch())
                                     }
                                 }
                             }
@@ -518,13 +412,13 @@ class Room extends React.Component {
                             <Column title="Loại phòng" dataIndex="typeroom" key="typeroom" align={'Left'}
                                 render={(text, record, index) => record.typeroom.description}
                             />
-                            <Column title="Trạng thái ở" dataIndex="status" key="status" align={'Left'}
-                                render={(text, record, index) => text
+                            <Column title="Trạng thái ở" dataIndex="status" key="status" align={'Center'}
+                                render={(text, record, index) => this.renderStatus(text)
 
                                 }
                             />
-                            <Column title="Tình trạng phòng" dataIndex="statusStay" key="statusStay" align={'Left'}
-                                render={(text, record, index) => text
+                            <Column title="Tình trạng phòng" dataIndex="statusStay" key="statusStay" align={'Center'}
+                                render={(text, record, index) => this.renderStatusStay(text)
 
                                 }
                             />

@@ -62,7 +62,7 @@ class Dashboard extends React.Component {
                 this.setState({
                     room: res.data.length,
                     listRoom: res.data,
-                    roomEmpty : res.data.filter(x=>x.StatusStay=="Trống").length
+                    roomEmpty: res.data.filter(x => x.StatusStay == "Trống").length
                 })
             }
         }).catch(e => {
@@ -114,9 +114,9 @@ class Dashboard extends React.Component {
                     </Col>
                 </Row>
 
-                <Row gutter={{ md: 22, lg: 22, xl: 22 }} style={{ padding: 28 }}>
+                <Row gutter={{ md: 22, lg: 22, xl: 22 }} style={{ padding: 10 }}>
                     <Col md={6} sm={6} xs={6} style={{}}>
-                        <Card onClick={()=>this.props.history.push("/admin/book-room")} bordered={false} style={{ background: '#7BD5F5', height: 200, width: 300, display: 'inline-flex' }}>
+                        <Card onClick={() => this.props.history.push("/admin/book-room")} bordered={false} style={{ background: '#7BD5F5', height: 200, width: 300, display: 'inline-flex' }}>
                             <div style={{ display: 'inline-flex' }}>
                                 <Card
                                     bordered={false}
@@ -149,7 +149,7 @@ class Dashboard extends React.Component {
                         </Card>
                     </Col>
                     <Col md={6} sm={6} xs={6} style={{}}>
-                        <Card  onClick={()=>this.props.history.push("/admin/employee")} bordered={false} style={{ background: '#F9E2AE', height: 200, width: 300, display: 'inline-flex' }}>
+                        <Card onClick={() => this.props.history.push("/admin/employee")} bordered={false} style={{ background: '#F9E2AE', height: 200, width: 300, display: 'inline-flex' }}>
                             <div style={{ display: 'inline-flex' }}>
                                 <Card
                                     bordered={false}
@@ -178,7 +178,7 @@ class Dashboard extends React.Component {
                         </Card>
                     </Col>
                     <Col md={6} sm={6} xs={6} style={{}}>
-                        <Card  onClick={()=>this.props.history.push("/admin/customer")} bordered={false} style={{ background: '#85CBCC', height: 200, width: 300, display: 'inline-flex' }}>
+                        <Card onClick={() => this.props.history.push("/admin/customer")} bordered={false} style={{ background: '#85CBCC', height: 200, width: 300, display: 'inline-flex' }}>
                             <div style={{ display: 'inline-flex' }}>
                                 <Card
                                     bordered={false}
@@ -207,7 +207,7 @@ class Dashboard extends React.Component {
                         </Card>
                     </Col>
                     <Col md={6} sm={6} xs={6} style={{}}>
-                        <Card  onClick={()=>this.props.history.push("/admin/room")} bordered={false} style={{ background: '#E84A5F', height: 200, width: 300, display: 'inline-flex' }}>
+                        <Card onClick={() => this.props.history.push("/admin/room")} bordered={false} style={{ background: '#E84A5F', height: 200, width: 300, display: 'inline-flex' }}>
                             <div style={{ display: 'inline-flex' }}>
                                 <Card
                                     bordered={false}
@@ -237,43 +237,52 @@ class Dashboard extends React.Component {
                     </Col>
                 </Row>
 
-                <Row gutter={{ md: 22, lg: 22, xl: 22 }} style={{ padding: 28 }}>
-                    <Col  md={12} sm={12} xs={12} style={{}}>
-                        <Card bordered={false} style={{ background: '#fff', height: 500, width: 710, display: 'inline-flex' }}>
-                            <p className="title-thongke">Số lượng khách hàng theo tháng</p>
-                            <div className="mixed-chart">
+                <Row gutter={{ md: 24, lg: 24, xl: 24 }} style={{ padding: 2, paddingTop: 6 }}>
+                    <Col md={18} sm={18} xs={18} style={{}}>
+                        {/* <Card bordered={false} style={{ display: 'inline-flex', height: 390 }}> */}
+                            <div style={{ background: '#56d6db47', borderRadius: 10, padding: 14, margin: '2px', marginLeft: 10 }}>
+                                <p className="title-thongke">Số lượng khách hàng theo tháng</p>
+                                <div className="mixed-chart">
+                                    <Chart
+                                        options={this.state.options}
+                                        series={this.state.series}
+                                        type="bar"
+                                        width="95%"
+                                        height="200"
+                                    />
+                                </div>
+
+                            </div>
+                        {/* </Card> */}
+                        {/* </Col>
+                    <Col md={8} sm={8} xs={8} style={{}}> */}
+                        {/* <Card bordered={false} style={{ display: 'inline-flex', height: 390 }}> */}
+                            <div style={{ background: '#56d6db47', borderRadius: 10, padding: 14, margin: '2px', marginLeft: 10 }}>
+                                <p className="title-thongke">Số lượng đặt phòng theo tháng</p>
                                 <Chart
                                     options={this.state.options}
                                     series={this.state.series}
-                                    type="bar"
-                                    width="500"
+                                    type="line"
+                                    width="95%"
+                                    height="200"
                                 />
                             </div>
-                        </Card>
+                        {/* </Card> */}
                     </Col>
-                    <Col md={6} sm={6} xs={6} style={{}}>
-                        <Card bordered={false} style={{ background: '#fff', height: 500, width: 300, display: 'inline-flex' }}>
-                        <p className="title-thongke">Số lượng đặt phòng theo tháng</p>
-                        <Chart
-                            options={this.state.options}
-                            series={this.state.series}
-                            type="line"
-                            width="500"
-                            />
-                        </Card>
-                    </Col>
-                    
+                    {/*                     
                 </Row>
-                <Row gutter={{ md: 24, lg: 24, xl: 24 }}>
+                <Row gutter={{ md: 24, lg: 24, xl: 24 }}> */}
                     <Col md={6} sm={6} xs={6} style={{}}>
-                        <Card style={{ background: '#fff', height: 500, width: 300, display: 'inline-flex' }}>
-                            <Title style={{ fontSize: 16, margin: '8px 0px' }}>
-                                <Icon style={{ fontSize: 26 }} type="bar-chart" />
+                        {/* <Card bordered={false} style={{ display: 'inline-flex', height: 310 }}> */}
+                            <div style={{ background: '#56d6db47', borderRadius: 10, padding: 14, height: 560, margin: '0px', marginRight: 10 }}>
+                                <Title style={{ fontSize: 16, margin: '0px 0px' }}>
+                                    <Icon style={{ fontSize: 26 }} type="bar-chart" />
                                 Thống kê phòng trống
-                            </Title>
-                            <Text>Số lượng phòng trống được cập nhật liên tục đúng với thực tế</Text>
-                            <Progress style={{ marginTop: 50 }} width={250} type="circle" percent={((this.state.roomEmpty/this.state.room)*100)} format={percent => `${this.state.roomEmpty+'/'+this.state.room}`} />
-                        </Card>
+                                </Title>
+                                <Text style={{marginTop: 25, display: 'block' }}>Số lượng phòng trống được cập nhật liên tục đúng với thực tế</Text>
+                                <Progress style={{ marginTop: 50, display: 'flex', justifyContent: 'center' }} width={250} type="circle" percent={((this.state.roomEmpty / this.state.room) * 100)} format={percent => `${this.state.roomEmpty + '/' + this.state.room}`} />
+                            </div>
+                        {/* </Card> */}
                     </Col>
                 </Row>
 

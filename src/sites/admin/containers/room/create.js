@@ -193,11 +193,11 @@ class Add extends Component {
                                     value={this.state.StatusStay}
                                     style={{ width: '70%' }}
                                     onChange={(val, e) => {
-                                        this.setState({ StatusStay: e.props.children })
+                                        this.setState({ StatusStay: val })
                                     }}
                                 >
-                                    <Option value="trong">Trống</Option>
-                                    <Option value="conguoi">Có người</Option>
+                                    <Option value="EMPTY">Trống</Option>
+                                    <Option value="USING">Đã có người</Option>
                                 </Select>
                             </Col>
                         </Row>
@@ -217,11 +217,11 @@ class Add extends Component {
                                     allowClear
                                     value={this.state.Status}
                                     style={{ width: '70%' }}
-                                    onChange={(val, e) => this.setState({ Status: e.props.children })}
+                                    onChange={(val, e) => this.setState({ Status: val })}
                                 >
-                                    <Option value="sach">Sạch</Option>
-                                    <Option value="ban">Bẩn</Option>
-                                    <Option value="dangdon">Đang dọn</Option>
+                                    <Option value="CLEAN">Sạch</Option>
+                                    <Option value="DIRTY">Bẩn</Option>
+                                    <Option value="CLEANING">Đang dọn</Option>
                                 </Select>
                             </Col>
                         </Row>

@@ -508,7 +508,7 @@ class User extends React.Component {
                             title="Ctrl + R"
                         >
                             <span className="toolbar-icon icon-refresh" />
-                            <span>Nạp</span>
+                            <span>Refresh</span>
                         </div>
                     </div>
                 </div>

@@ -30,74 +30,83 @@ class Customer extends React.Component {
         this.state = {
             listUserSelected: [],
             progress: true,
-            data:[],
-            page:0,
-            size:10,
-            total:0,
-            openAddUpdate : false,
-            dataCustomer:{},
-            confirmDialog:false,
-            name:'',
-            code:'',
-            identity:'',
-            gender:''
+            data: [],
+            page: 0,
+            size: 10,
+            total: 0,
+            openAddUpdate: false,
+            dataCustomer: {},
+            confirmDialog: false,
+            name: '',
+            code: '',
+            identity: '',
+            gender: ''
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.loadPage()
     }
 
-    loadPage(){
-        this.getCustomerByPage()
+    loadPage() {
+        this.setState({
+            name: '',
+            code: '',
+            identity: '',
+            gender: ''
+        }, () => this.getCustomerOnSearch())
     }
 
-    search=()=>{
+    search = () => {
         let param = {
-            customerName : this.state.name,
+            customerName: this.state.name,
             customerNo: this.state.code,
             identityCard: this.state.identity,
             gender: this.state.gender
 
         }
-        customerProvider.search(param).then(res=>{
+        customerProvider.search(param).then(res => {
             console.log(res)
-            if(res.code==0){
+            if (res.code == 0) {
                 this.setState({
                     data: res.data
                 })
             }
-        }).catch(e=>{
+        }).catch(e => {
             console.log(e)
         })
     }
 
-    getCustomerByPage() {
+    getCustomerOnSearch() {
         this.setState({ progress: true })
-        let param = {
-            pagesize: this.state.size,
-            pagenumber: this.state.page
+        let payload = {
+            page: this.state.page,
+            size: this.state.size,
+            // customerName: this.state.name,
+            // customerNo: this.state.code,
+            // identityCard: this.state.identity,
+            // gender: this.state.gender
         }
-        customerProvider.getByPage(param).then(res => {
+        customerProvider.searchAndPaging(payload).then(res => {
             console.log(res)
-            if(res.code==0){
+            if (res.code == 0) {
                 this.setState({
-                    data: res.data.Results,
-                    total: res.data.TotalNumberOfRecords,
+                    data: res.data.content,
+                    total: res.data.totalElements,
                     // totalPerPage:res.Data.TotalNumberOfRecords
                 })
                 this.setState({ progress: false })
             }
-           
+
         }).catch(e => {
             console.log(e)
             this.setState({ progress: false })
         })
     }
 
-    closeModal = ()=>{
+    closeModal = () => {
         this.setState({
-            openAddUpdate:false
+            openAddUpdate: false
         })
     }
 
@@ -116,8 +125,8 @@ class Customer extends React.Component {
         listUserSelected.map(v => listId.push(v.CustomerID));
 
         console.log(listId);
-        
-        if(type==1){
+
+        if (type == 1) {
             customerProvider.delete(listId).then(res => {
                 console.log(res)
                 if (res.code == 0) {
@@ -142,7 +151,7 @@ class Customer extends React.Component {
                 });
             })
         }
-        
+
 
     }
 
@@ -168,7 +177,7 @@ class Customer extends React.Component {
         const rowSelection = {
             onChange: (selectedRowKeys, selectedRows) => {
                 console.log(selectedRows)
-                this.setState({listUserSelected:selectedRows, dataCustomer: selectedRows[0],dataCustomer2:selectedRows[0] })
+                this.setState({ listUserSelected: selectedRows, dataCustomer: selectedRows[0], dataCustomer2: selectedRows[0] })
                 console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
             },
             getCheckboxProps: record => ({
@@ -188,8 +197,8 @@ class Customer extends React.Component {
                             data-placement="bottom"
                             title="Ctrl + 1"
                             id="sub-open"
-                            
-                             onClick={() => this.setState({ openAddUpdate: true,dataCustomer:{} })}
+
+                            onClick={() => this.setState({ openAddUpdate: true, dataCustomer: {} })}
                         >
                             <span className="toolbar-icon icon-add" />
                             <span className="toolbar-text">Thêm mới</span>
@@ -206,7 +215,7 @@ class Customer extends React.Component {
                             data-toggle="tooltip"
                             data-placement="bottom"
                             title="Ctrl + E"
-                            onClick={() => this.setState({ openAddUpdate: true,dataCustomer:this.state.dataCustomer2})}
+                            onClick={() => this.setState({ openAddUpdate: true, dataCustomer: this.state.dataCustomer2 })}
                         >
                             <span className="toolbar-icon icon-edit" />
                             <span>Sửa</span>
@@ -226,10 +235,10 @@ class Customer extends React.Component {
                             data-toggle="tooltip"
                             data-placement="bottom"
                             title="Ctrl + R"
-                            onClick = {()=>this.loadPage()}
+                            onClick={() => this.loadPage()}
                         >
                             <span className="toolbar-icon icon-refresh" />
-                            <span>Nạp</span>
+                            <span>Refresh</span>
                         </div>
                     </div>
                 </div>
@@ -243,7 +252,7 @@ class Customer extends React.Component {
                                     value={this.state.name}
                                     placeholder="Nhập tên KH"
                                     style={{ width: '70%' }}
-                                    onChange = {(val)=> this.setState({name:val.target.value })}
+                                    onChange={(val) => this.setState({ name: val.target.value })}
                                 />
                             </Col>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
@@ -252,7 +261,7 @@ class Customer extends React.Component {
                                     value={this.state.identity}
                                     placeholder="Nhập số CMND"
                                     style={{ width: '70%' }}
-                                    onChange = {(val)=> this.setState({identity: val.target.value})}
+                                    onChange={(val) => this.setState({ identity: val.target.value })}
                                 />
                             </Col>
                         </Row>
@@ -263,12 +272,12 @@ class Customer extends React.Component {
                         }}>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Typography style={{ margin: '8px 0px', width: 130 }}>Mã KH</Typography>
-                            
+
                                 <Input
                                     value={this.state.code}
                                     placeholder="Nhập mã KH"
                                     style={{ width: '70%' }}
-                                    onChange = {(val)=> this.setState({code :val.target.value})}
+                                    onChange={(val) => this.setState({ code: val.target.value })}
                                 />
                             </Col>
                             <Col md={12} sm={24} xs={24} style={{ display: 'inline-flex' }}>
@@ -276,7 +285,7 @@ class Customer extends React.Component {
                                 <Select
                                     defaultValue=""
                                     style={{ width: '70%' }}
-                                    onChange={(val) => {this.setState({gender:val}) }}>
+                                    onChange={(val) => { this.setState({ gender: val }) }}>
                                     <Option value={true}>Nam</Option>
                                     <Option value={false}>Nữ</Option>
                                 </Select>
@@ -290,22 +299,16 @@ class Customer extends React.Component {
                             <Col md={12} sm={24} xs={24} >
                                 <Button
                                     style={{ margin: '8px 0px' }}
-                                    onClick={this.search}
+                                    onClick={() => this.getCustomerOnSearch()}
                                 >
                                     Tìm kiếm
                                     </Button>
                             </Col>
                         </Row>
-
-
-
-
                     </Card>
                 </div>
-
-
                 <div className="table-data">
-                <Spin spinning={progress}>
+                    <Spin spinning={progress}>
                         <Table
                             rowSelection={rowSelection}
                             dataSource={data}
@@ -316,11 +319,11 @@ class Customer extends React.Component {
                                     pageSize: size,
                                     total: total,
                                     onShowSizeChange: (current, pageSize) => {
-                                        this.setState({ size: pageSize, page: current - 1 }, () => this.getCustomerByPage())
+                                        this.setState({ size: pageSize, page: current - 1 }, () => this.getCustomerOnSearch())
                                     },
                                     onChange: (value) => {
                                         console.log(value)
-                                        this.setState({ page: value - 1 }, () => this.getCustomerByPage())
+                                        this.setState({ page: value - 1 }, () => this.getCustomerOnSearch())
                                     }
                                 }
                             }
@@ -328,39 +331,40 @@ class Customer extends React.Component {
                             scroll={{ y: 400 }}
                         >
                             <Column title="STT" key="index" width={90} align={'Center'}
-                                render={(text, record, index) => index}
+                                render={(text, record, index) => (this.state.page) * this.state.size + index + 1}
                             />
 
-                            <Column title="Ngày sinh" key="Dob" dataIndex="Dob" width={180} align={'Center'}
+                            <Column title="Mã KH" dataIndex="no" key="no" align={'Left'}
+                                render={(text, record, index) => text}
+                            />
+
+                            <Column title="Tên KH" dataIndex="name" key="name" align={'Left'}
+                                render={(text, record, index) => text}
+                            />
+                            <Column title="Ngày sinh" key="dob" dataIndex="dob" width={180} align={'Center'}
                                 render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
                             />
-
-
-                            <Column title="Mã KH" dataIndex="CustomerNo" key="No" align={'Left'}
+                            <Column title="Giới tính" dataIndex="gender" key="gender" align={'Center'}
+                                render={(text, record, index) => text ? 'Nam' : 'Nữ'}
+                            />
+                            <Column title="Email" dataIndex="email" key="email" align={'Left'}
                                 render={(text, record, index) => text}
                             />
-
-                            <Column title="Tên KH" dataIndex="Name" key="Name" align={'Left'}
+                            <Column title="Số CMND" dataIndex="identity_card" key="identity_card" align={'Center'}
                                 render={(text, record, index) => text}
                             />
-                            <Column title="Email" dataIndex="Email" key="Email" align={'Left'}
+                            <Column title="Địa chỉ" dataIndex="address" key="address" align={'Left'}
                                 render={(text, record, index) => text}
                             />
-                            <Column title="Số CMND" dataIndex="IdentityCard" key="IdentityCard" align={'Center'}
-                                render={(text, record, index) => text}
-                            />
-                            <Column title="Địa chỉ" dataIndex="Address" key="Address" align={'Center'}
-                                render={(text, record, index) => text }
-                            />
-                            <Column title="Quốc tịch" dataIndex="Nationality" key="Nationality" align={'Center'}
+                            <Column title="Quốc tịch" dataIndex="nationality" key="nationality" align={'Center'}
                                 render={(text, record, index) => text}
                             />
 
                         </Table>
-                        </Spin>
+                    </Spin>
                 </div>
-                {this.state.confirmDialog && <ConfirmDialog title="Xác nhận" content={"Bạn có chắc chắn muốn xóa " +this.state.listUserSelected.length+ " khách hàng?"} btnOk="Xác nhận" btnCancel="Hủy" cbFn={this.delete.bind(this)} />}
-                {openAddUpdate&&<ModalAddUpdate data = {dataCustomer} refresh={this.loadPage.bind(this)} callBackOff ={this.closeModal.bind(this)}/>}
+                {this.state.confirmDialog && <ConfirmDialog title="Xác nhận" content={"Bạn có chắc chắn muốn xóa " + this.state.listUserSelected.length + " khách hàng?"} btnOk="Xác nhận" btnCancel="Hủy" cbFn={this.delete.bind(this)} />}
+                {openAddUpdate && <ModalAddUpdate data={dataCustomer} refresh={this.loadPage.bind(this)} callBackOff={this.closeModal.bind(this)} />}
             </div>
         )
     }

@@ -25,16 +25,16 @@ class ModalAddUpdate extends React.Component {
         super(props)
 
         this.state={
-            customerID: this.props.data&&this.props.data.CustomerID?this.props.data.CustomerID:'',
-            customerName: this.props.data&&this.props.data.Name?this.props.data.Name:'',
-            customerCode: this.props.data&&this.props.data.CustomerNo?this.props.data.CustomerNo:'',
-            email: this.props.data&&this.props.data.Email?this.props.data.Email:'',
-            phoneNumber: this.props.data&&this.props.data.Phone_Fax?this.props.data.Phone_Fax:'',
-            identityCard: this.props.data&&this.props.data.IdentityCard?this.props.data.IdentityCard:'',
-            nationality: this.props.data&&this.props.data.Nationality?this.props.data.Nationality:'',
-            address : this.props.data&&this.props.data.Address?this.props.data.Address:'',
-            dob: this.props.data &&this.props.data.Dob ? this.props.data.Dob: new Date(),
-            gender : this.props.data&&this.props.data.Gender? this.props.data.Gender:'',
+            customerID: this.props.data&&this.props.data.id?this.props.data.id:'',
+            customerName: this.props.data&&this.props.data.name?this.props.data.name:'',
+            customerCode: this.props.data&&this.props.data.no?this.props.data.no:'',
+            email: this.props.data&&this.props.data.email?this.props.data.email:'',
+            phoneNumber: this.props.data&&this.props.data.phone?this.props.data.phone:'',
+            identityCard: this.props.data&&this.props.data.identity_card?this.props.data.identity_card:'',
+            nationality: this.props.data&&this.props.data.nationality?this.props.data.nationality:'',
+            address : this.props.data&&this.props.data.address?this.props.data.address:'',
+            dob: this.props.data &&this.props.data.dob ? this.props.data.dob: new Date(),
+            gender : this.props.data&&this.props.data.gender? this.props.data.gender:'',
             validName:true,
             validNo: true,
             validEmail:true,
@@ -45,20 +45,20 @@ class ModalAddUpdate extends React.Component {
     }
 
     createUpdateCustomer(){
-        let param = {
-            CustomerNo : this.state.customerCode,
-            Name : this.state.customerName,
-            Gender: this.state.gender,
-            Dob : this.state.dob,
-            Address: this.state.address,
-            Phone_Fax: this.state.phoneNumber,
-            Email: this.state.email,
-            IdentityCard: this.state.identityCard,
-            Nationality: this.state.nationality
+        let payload = {
+            no : this.state.customerCode,
+            name : this.state.customerName,
+            gender: this.state.gender,
+            dob : this.state.dob,
+            address: this.state.address,
+            phone: this.state.phoneNumber,
+            email: this.state.email,
+            identity_card: this.state.identityCard,
+            nationality: this.state.nationality
         }
 
-        if(this.props.data&&this.props.data.CustomerID){
-            customerProvider.update(this.state.customerID,param).then(res=>{
+        if(this.props.data&&this.props.data.id){
+            customerProvider.update(this.state.customerID,payload).then(res=>{
                 if(res.code==0){
                     toast.success("Cập nhật thành công",{
                         position:toast.POSITION.TOP_RIGHT
@@ -80,8 +80,7 @@ class ModalAddUpdate extends React.Component {
             })
         }
         else{
-            customerProvider.create(param).then(res=>{
-
+            customerProvider.create(payload).then(res=>{
                 switch(res.code){
                     case 0 :
                         toast.success("Tạo mới khách hàng thành công",{
@@ -125,7 +124,7 @@ class ModalAddUpdate extends React.Component {
         
             <div>
                 <Modal
-                    title={this.props.data&&this.props.data.CustomerID?"Cập nhật khách hàng":"Thêm mới khách hàng"}
+                    title={this.props.data&&this.props.data.id?"Cập nhật khách hàng":"Thêm mới khách hàng"}
                     width={"70%"}
                     visible={true}
                     onCancel={() => {
@@ -137,7 +136,7 @@ class ModalAddUpdate extends React.Component {
                                 Hủy
                                 </Button>,
                             <Button onClick={()=>this.createUpdateCustomer()} type="danger" >
-                                {this.props.data&&this.props.data.CustomerID? 'Cập nhật':'Thêm mới'}
+                                {this.props.data&&this.props.data.id? 'Cập nhật':'Thêm mới'}
                                 </Button>,
                         ]
                     }

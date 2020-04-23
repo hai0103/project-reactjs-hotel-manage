@@ -3,6 +3,7 @@ import stringUtils from '../resources/stringUtils';
 import constants from '../resources/strings';
 import datacacheProvider from './datacache-provider';
 import clientUtils from '../utils/client-utils';
+import { stringify } from 'querystring';
 
 var md5 = require('md5');
 export default {
@@ -20,13 +21,24 @@ export default {
         let parameters =
             (param.customerName ? '?customerName=' + param.customerName : '?customerName=' + '') +
             (param.customerNo ? '&customerNo=' + param.customerNo : '&customerNo=' + '') +
-            (param.nation ? '&nation=' + param.nation : '&nation='+'') +
+            (param.nation ? '&nation=' + param.nation : '&nation=' + '') +
             (param.identityCard ? '&identityCard=' + param.identityCard : '&identityCard=' + '') +
             (param.gender ? '&gender=' + param.gender : '&gender=' + '') +
             (param.dob ? '&dob=' + param.dob : '&dob=' + '') +
             (param.phone ? '&phone=' + param.phone : '&phone=' + '') +
             (param.email ? '&email=' + param.email : '&email=' + '')
 
+        return new Promise((resolve, reject) => {
+            clientUtils.requestApi("get", constants.api.customer.search + parameters, {}).then(x => {
+                resolve(x);
+            }).catch(e => {
+                reject(e);
+            })
+        })
+    },
+
+    searchAndPaging(param) {
+        let parameters = `?${stringify(param)}`
         return new Promise((resolve, reject) => {
             clientUtils.requestApi("get", constants.api.customer.search + parameters, {}).then(x => {
                 resolve(x);
@@ -48,32 +60,32 @@ export default {
             })
         })
     },
-    create(object){
+    create(object) {
         return new Promise((resolve, reject) => {
-            clientUtils.requestApi("post", constants.api.customer.create , object).then(x => {
+            clientUtils.requestApi("post", constants.api.customer.create, object).then(x => {
                 resolve(x);
             }).catch(e => {
                 reject(e);
             })
         })
     },
-    update(id, object){
+    update(id, object) {
         return new Promise((resolve, reject) => {
-            clientUtils.requestApi("post", constants.api.customer.update+'?id='+id , object).then(x => {
+            clientUtils.requestApi("post", constants.api.customer.update + '?id=' + id, object).then(x => {
                 resolve(x);
             }).catch(e => {
                 reject(e);
             })
         })
     },
-    delete(param){
+    delete(param) {
         return new Promise((resolve, reject) => {
-            clientUtils.requestApi("delete", constants.api.customer.delete , param).then(x => {
+            clientUtils.requestApi("delete", constants.api.customer.delete, param).then(x => {
                 resolve(x);
             }).catch(e => {
                 reject(e);
             })
         })
     }
-    
+
 }   

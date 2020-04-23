@@ -261,7 +261,7 @@ class BookRoom extends React.Component {
                             onClick={() => this.loadPage()}
                         >
                             <span className="toolbar-icon icon-refresh" />
-                            <span>Nạp</span>
+                            <span>Refresh</span>
                         </div>
                     </div>
                 </div>

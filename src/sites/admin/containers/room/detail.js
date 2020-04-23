@@ -61,6 +61,31 @@ class Detail extends Component {
         this.props.closeModal();
     }
 
+    renderStatus = (status) => {
+        switch (status) {
+            case 'CLEAN':
+                return 'Sạch';
+            case 'DIRTY':
+                return 'Bẩn';
+            case 'CLEANING':
+                return 'Đang dọn';
+            default:
+                return '';
+        }
+    }
+
+    renderStatusStay = (status) => {
+        switch (status) {
+            case 'EMPTY':
+                return 'Trống';
+            case 'USING':
+                return 'Đã có người';
+            default:
+                return '';
+        }
+    }
+
+
     render() {
         return (
             <div>
@@ -120,12 +145,12 @@ class Detail extends Component {
                         </Row><Row gutter={{ md: 12, lg: 12, xl: 12 }}>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong={true} style={{ margin: '8px 0px', width: 130 }}>Trạng thái ở</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].statusStay}</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.renderStatusStay(this.props.listRoom[0].statusStay)}</Text>
 
                             </Col>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Tình trạng phòng</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.props.listRoom[0].status}</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.renderStatus(this.props.listRoom[0].status)}</Text>
                             </Col>
                         </Row>
                     </Card>

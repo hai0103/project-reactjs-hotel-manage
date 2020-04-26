@@ -52,12 +52,15 @@ class Login extends React.Component {
                 console.log(res)
                 switch (res.status) {
                     case 200:
-                        let user = res.data
+                        let user = res.data;
+                        let detail = res.data.data.user.user;
+                        delete detail.password
+                        localStorage.setItem("hotel-user-detail",  JSON.stringify(res.data.data.user.user));
                         this.props.dispatch({type: constants.action.action_user_login, value: user})
                         dataCacheProvider.save("", constants.key.storage.current_account, user).then(s => {
                             this.props.history.push("/admin/dashboard");
                         });
-                        toast.success('Xin chào ' + res.data.userName, {
+                        toast.success('Xin chào ' + res.data.data.user.user.username, {
                             position: toast.POSITION.TOP_RIGHT
                         });
                         break;

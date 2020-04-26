@@ -104,26 +104,35 @@ html,body{
     /* border: 1px solid #ccc; */
 }
 .user-setting{
+  min-width: 150px;
   margin-top: 10px;
-    margin-right: 8px;
-    background: #fff;
-    text-align: center;
-    align-items: center;
-    /* line-height: 19px; */
-    padding: 8px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    position: relative;
-}
-.user-setting img{
   margin-right: 8px;
-  width: 16px;
-  height: 16px;
+  border-radius: 4px;
+  background: #d0f4f5;
+  /* text-align: center; */
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+  padding: 8px 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  position: relative;
+}
+.user-setting .user-avatar{
+  margin-right: 8px;
+  width: 24px;
+  height: 24px;
 }
 .user-setting .user-name{
   font-weight: 600;
     font-size: 14px;
 }
+
+.user-setting .icon-down{
+  width: 12px;
+  padding: 0px;
+}
+
 .sub-menu-setting{
   position: absolute;
     top: 36px;
@@ -159,4 +168,20 @@ html,body{
   position: absolute;
   left: 50%;
   top: 50%;
+}
+
+
+::-webkit-scrollbar-track
+{
+    background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar
+{
+    width: 5px;
+    background-color: #ccc;
+}
+::-webkit-scrollbar-thumb
+{
+    background-color: #2F9599;
 }

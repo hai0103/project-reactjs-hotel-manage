@@ -62,7 +62,7 @@ class Dashboard extends React.Component {
                 this.setState({
                     room: res.data.length,
                     listRoom: res.data,
-                    roomEmpty: res.data.filter(x => x.StatusStay == "Trống").length
+                    roomEmpty: res.data.filter(x => x.statusStay == "EMPTY").length
                 })
             }
         }).catch(e => {

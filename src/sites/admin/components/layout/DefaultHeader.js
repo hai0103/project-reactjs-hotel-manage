@@ -102,6 +102,7 @@ class PrimarySearchAppBar extends React.Component {
 
     const renderMenu = (
       <Menu
+      style={{width:200}}
         anchorEl={anchorEl}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}

@@ -21,7 +21,8 @@ class Home extends Component {
         super(props);
         this.state = {
             menus: [],
-            activeSideBar:true
+            activeSideBar:true,
+            activeItem: 1,
         }
     }
 
@@ -36,72 +37,84 @@ class Home extends Component {
             //     classActiveStyle: 'dashboard',
             // },
             {
+                id: 1,
                 name: "Tổng quan",
                 url: '/admin/dashboard',
                 iconClassName: 'icon-dashboard',
                 classActiveStyle: 'calendar-working',
             },
             {
+                id: 2,
                 name: "Quản lý User",
                 url: '/admin/user',
                 iconClassName: 'icon-user',
                 classActiveStyle: 'calendar-working',
             },
             {
+                id: 3,
                 name: "Quản lý phòng",
                 url: '/admin/room',
                 iconClassName: 'icon-room',
                 classActiveStyle: 'calendar-working',
             },
             {
+                id: 4,
                 name: "Quản lý đặt phòng",
                 url: '/admin/book-room',
                 iconClassName: 'icon-book-room',
                 classActiveStyle: 'calendar-working',
             },
             {
+                id: 5,
                 name: "Quản lý khách hàng",
                 url: '/admin/customer',
                 iconClassName: 'icon-employ',
                 classActiveStyle: 'calendar-working',
             },
             {
+                id: 6,
                 name: "Quản lý trang thiết bị",
                 url: '/admin/device',
                 iconClassName: 'icon-device',
                 classActiveStyle: 'calendar-working',
             },
             {
+                id: 7,
                 name: "Quản lý thanh toán",
                 url: '/admin/payment',
                 iconClassName: 'icon-payment',
                 classActiveStyle: 'calendar-working',
             },
             {
+                id: 8,
                 name: "Quỹ tiền",
                 url: '/admin/fund',
                 iconClassName: 'icon-fund',
                 classActiveStyle: 'calendar-working',
             },
             {
+                id: 9,
                 name: "Danh mục",
                 url: '/admin/menu-list',
                 iconClassName: 'icon-list',
                 classActiveStyle: 'calendar-working',
             },
             {
+                id: 10,
                 name: "Báo cáo",
                 url: '/admin/report',
                 iconClassName: 'icon-report',
                 classActiveStyle: 'calendar-working',
             },
             {
+                id: 11,
                 name: "Khuyến mại",
                 url: '/admin/sale',
                 iconClassName: 'icon-sale',
                 classActiveStyle: 'calendar-working',
             },
             {
+                id: 12,
                 name: "Thiết lập",
                 url: '/admin/setting',
                 iconClassName: 'icon-setting',
@@ -128,6 +141,7 @@ class Home extends Component {
         this.setState({ menus: this.getMenu() })
     }
     render() {
+        const {activeItem} = this.state;
         const { classes } = this.props;
         return (
             <div className="app">
@@ -143,7 +157,12 @@ class Home extends Component {
                                     this.state.menus.map((item,index) => {
 
                                         if (!(item.subMenu && item.subMenu.length)) {
-                                            return <li key={index} className="nav-item"><NavLink className={'nav-link ' + `${item.classActiveStyle}`} activeclassname="active" to={item.url}>
+                                            return <li 
+                                            key={index} 
+                                            className={"nav-item " + `${activeItem === item.id ? 'nav-item-active' : ''}`}
+                                            onClick={() => this.setState({activeItem: item.id})}
+                                            >
+                                                <NavLink className={'nav-link '} activeclassname="active" to={item.url}>
                                                     <span className={"icon-sidebar" + " " + item.iconClassName} alt={item.name}></span>
                                                     <span>{item.name}</span>
                                                 </NavLink>

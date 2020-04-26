@@ -1,5 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux';
+import { BrowserRouter, Router, NavLink } from "react-router-dom";
+
 class Header extends React.Component{
     constructor(props){
         super(props)
@@ -19,7 +21,10 @@ class Header extends React.Component{
         return(
             <header className="header-admin">
                 <div className="left-side-header">
-                    <p style={{marginTop:18}}>Hotel Mange</p>
+                <NavLink to={'/admin/dashboard'}>
+                    <img src="/icon/logo.png" style={{height: '100%'}}/>
+                  
+                </NavLink>  
                 </div>
                 {this.props.userApp.currentUser?
                     <div onClick={()=>this.setState({activeSub:!this.state.activeSub})} className="user-setting">

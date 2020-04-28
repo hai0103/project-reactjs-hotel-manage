@@ -1,10 +1,10 @@
 //React, redux
 import React from 'react'
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 //UI
-import {toast} from 'react-toastify';
-import {ToastContainer} from 'react-toastify';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import constants from '../../../../resources/strings'
 
@@ -41,13 +41,13 @@ class Login extends React.Component {
     }
 
     login() {
-        const {username, password, grant_type} = this.state;
+        const { username, password, grant_type } = this.state;
         // let body = 'grant_type=password&username=' + username + '&password=' + password
         // let body = 'username=' + username + '&password=' + password
-        let body = {username: username, password: password}
+        let body = { username: username, password: password }
         console.log(body)
         // axios.post('https://localhost:44307/token', body, { 'Content-Type': 'application/json' })
-        axios.post('http://localhost:8080/login', body, {'Content-Type': 'application/json'})
+        axios.post('http://localhost:8080/login', body, { 'Content-Type': 'application/json' })
             .then((res) => {
                 console.log(res)
                 switch (res.status) {
@@ -55,8 +55,8 @@ class Login extends React.Component {
                         let user = res.data;
                         let detail = res.data.data.user.user;
                         delete detail.password
-                        localStorage.setItem("hotel-user-detail",  JSON.stringify(res.data.data.user.user));
-                        this.props.dispatch({type: constants.action.action_user_login, value: user})
+                        localStorage.setItem("hotel-user-detail", JSON.stringify(res.data.data.user.user));
+                        this.props.dispatch({ type: constants.action.action_user_login, value: user })
                         dataCacheProvider.save("", constants.key.storage.current_account, user).then(s => {
                             this.props.history.push("/admin/dashboard");
                         });
@@ -88,45 +88,46 @@ class Login extends React.Component {
 
 
     render() {
-        const {username, password, confirm} = this.state;
+        const { username, password, confirm } = this.state;
         return (
             <div className="login-form limiter">
                 <div className="container-login100">
                     <div className="wrap-login100">
-                        <div className="login100-form-title" style={{backgroundImage: 'url(images/bg-01.jpg)'}}>
-                  <span className="login100-form-title-1">
-                    Landber <sub style={{fontWeight: 100, fontSize: 10}}>Admin</sub>
-                  </span>
+                        {/* <div className="login100-form-title" style={{ backgroundImage: 'url(images/bg-01.jpg)' }}> */}
+                        <div className="login100-form-title" style={{ background: '#9bbcad' }}>
+                            <span className="login100-form-title-1">
+                                Hotel M <sub style={{ fontWeight: 100, fontSize: 10, textTransform: 'capitalize' }}>Admin</sub>
+                            </span>
                         </div>
                         <form className="login100-form validate-form">
-                            <div className="wrap-input100 validate-input m-b-26" data-validate="Username is required">
-                                <span className="label-input100">Username</span>
+                            <div className="wrap-input100 validate-input m-b-26" data-validate="Vui lòng nhập tên đăng nhập">
+                                <span className="label-input100">Tên đăng nhập</span>
                                 <input value={username} onChange={(event) => {
-                                    this.setState({username: event.target.value})
-                                }} className="input100" type="text" name="username" placeholder="Enter username"/>
-                                <span className="focus-input100"/>
+                                    this.setState({ username: event.target.value })
+                                }} className="input100" type="text" name="username" placeholder="Nhập tên đăng nhập" />
+                                <span className="focus-input100" />
                             </div>
-                            <div className="wrap-input100 validate-input m-b-18" data-validate="Password is required">
-                                <span className="label-input100">Password</span>
+                            <div className="wrap-input100 validate-input m-b-18" data-validate="Vui lòng nhập mật khẩu">
+                                <span className="label-input100">Mật khẩu</span>
                                 <input onKeyPress={e => {
                                     if (e.key === 'Enter') {
                                         this.login()
                                     }
                                 }} value={password} onChange={(event) => {
-                                    this.setState({password: event.target.value})
-                                }} className="input100" type="password" name="pass" placeholder="Enter password"/>
-                                <span className="focus-input100"/>
+                                    this.setState({ password: event.target.value })
+                                }} className="input100" type="password" name="pass" placeholder="Nhập mật khẩu" />
+                                <span className="focus-input100" />
                             </div>
                             <div className="flex-sb-m w-full p-b-30">
                                 <div className="contact100-form-checkbox">
-                                    <input className="input-checkbox100" id="ckb1" type="checkbox" name="remember-me"/>
+                                    <input className="input-checkbox100" id="ckb1" type="checkbox" name="remember-me" />
                                     <label className="label-checkbox100" htmlFor="ckb1">
-                                        Remember me
+                                        Ghi nhớ tôi
                                     </label>
                                 </div>
                                 <div>
                                     <a href="#" className="txt1">
-                                        Forgot Password?
+                                        Quên mật khẩu?
                                     </a>
                                 </div>
                             </div>
@@ -135,7 +136,7 @@ class Login extends React.Component {
                             </div>
                         </form>
                         <button onClick={() => this.login()} className="login100-form-btn">
-                            Login
+                            Đăng Nhập
                         </button>
                     </div>
                 </div>

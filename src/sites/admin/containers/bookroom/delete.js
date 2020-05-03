@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import typeRoomProvider from '../../../../data-access/typeroom-provider';
 import roomProvider from '../../../../data-access/room-provider';
+import bookRoomProvider from '../../../../data-access/bookroom-provider';
 
 import {
     Button,
@@ -46,11 +47,11 @@ class Delete extends Component {
         } = this.state;
 
         let listId = [];
-        listBookRoomDelete.map(v => listId.push(v.BookRoomID));
+        listBookRoomDelete.map(v => listId.push(v.id));
 
         let payload = listId;
 
-        roomProvider.delete(payload).then(res => {
+        bookRoomProvider.delete(payload).then(res => {
             console.log(res)
             if (res.code == 0) {
                 switch (res.code) {
@@ -113,7 +114,7 @@ class Delete extends Component {
                 >
                     <Card style={{ padding: 4 }} bordered={false}>
                         <Typography >Bạn có chắc muốn xóa :</Typography>
-                        {this.state.listBookRoomDelete.map(v => <Typography >{v.BookRoomNo}</Typography>)}
+                        {this.state.listBookRoomDelete.map(v => <Typography >{v.bookNo}</Typography>)}
                     </Card>
                 </Modal>
 

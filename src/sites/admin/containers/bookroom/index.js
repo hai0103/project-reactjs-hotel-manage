@@ -8,6 +8,7 @@ import './style.css'
 import moment from 'moment';
 import ColumnResizer from "react-column-resizer";
 import { toast } from 'react-toastify';
+import NumberFormat from "react-number-format";
 
 import ModalAddBookRoom from './create';
 import ModalDeleteBookRoom from './delete';
@@ -73,9 +74,18 @@ class BookRoom extends React.Component {
     }
 
     loadPage() {
-        this.getBookRoomByPageOnSearch();
-        this.getAllCustomer();
-        this.getAllRoom();
+        this.setState({
+            bookroomNo: '',
+            roomId: '',
+            customerId: '',
+            statusStay: '',
+            nop: '',
+            customerCode: '',
+            identity: ''
+        }, () => {
+            this.getBookRoomByPageOnSearch();
+            this.getAllCustomer();
+        })
     }
 
     getAllCustomer() {
@@ -96,41 +106,23 @@ class BookRoom extends React.Component {
         })
     }
 
-    getAllRoom() {
-        roomProvider.getAll().then(res => {
-            console.log(res)
-            if (res.code == 0) {
-                this.setState({
-                    listRoom: res.data,
-                })
-            }
-            else {
-                this.setState({
-                    listRoom: []
-                })
-            }
-        }).catch(e => {
-            console.log(e)
-        })
-    }
-
     getBookRoomByPageOnSearch() {
-
-
         this.setState({ progress: true })
-        let param = {
-            pageSize: this.state.size,
-            pageNumber: this.state.page,
-            customerId: this.state.customerId,
-            bookroomNo: this.state.bookroomNo,
-            customerCode: this.state.customerCode,
-            identity: this.state.identity
+        let {bookroomNo, customerId, customerCode, identity, page, size} = this.state;
+        let payload = {
+            bookNo: bookroomNo,
+            customerName: customerId,
+            customerCode: customerCode,
+            identity: identity,
+            page: page,
+            size: size,
+            // customerId: customerId,
         }
-        bookRoomProvider.searchAndPage(param).then(res => {
+        bookRoomProvider.searchAndPaging(payload).then(res => {
             console.log(res)
             this.setState({
-                data: res.data.Results,
-                total: res.data.TotalNumberOfRecords,
+                data: res.data.content,
+                total: res.data.totalElements,
             })
             this.setState({ progress: false })
         }).catch(e => {
@@ -139,22 +131,9 @@ class BookRoom extends React.Component {
         })
     }
 
-    handleSearch() {
-        this.getBookRoomByPageOnSearch();
-    }
-
-    renderListRoom = (listRoom) => {
-        let lst = '';
-        debugger
-        listRoom.map(item =>
-            lst = lst + item.RoomNo + ','
-        )
-
-        return <Typography>{lst}</Typography>
-    }
 
     closeModal() {
-        this.loadPage();
+        this.getBookRoomByPageOnSearch();
         this.setState({ openCreateModal: false });
     }
 
@@ -181,11 +160,6 @@ class BookRoom extends React.Component {
 
         const classes = this.props;
         const { modalAdd,
-            modalDetailtServiceType,
-            confirmDialog,
-            dataUser,
-            fromDate,
-            toDate,
             data,
             progress,
             page,
@@ -212,10 +186,10 @@ class BookRoom extends React.Component {
                             onClick={() => {
                                 // if (this.state.listBookRoomSelected.length == 1)
                                 this.setState({ showModalPayment: true })
-                                debugger
+                                // debugger
                             }}
                         >
-                            <span className="toolbar-icon icon-double" />
+                            <span className="toolbar-icon icon-done" />
                             <span>Thanh toán</span>
                         </div>
                         <div
@@ -298,7 +272,7 @@ class BookRoom extends React.Component {
                                 <Input
                                     allowClear
                                     value={this.state.identity}
-                                    onChange={(val) => this.setState({ identity: val.target.value })}
+                                    onChange={(val) => this.setState({ identity: val.target.value.trim() })}
                                     placeholder="Nhập số CMND/CCCD"
                                     style={{ marginTop: 4, width: '70%' }}
                                 />
@@ -306,7 +280,7 @@ class BookRoom extends React.Component {
 
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Typography style={{ margin: '8px 0px', width: 130 }}>Tên khách hàng</Typography>
-                                <Select
+                                {/* <Select
                                     placeholder="Chọn khách hàng"
                                     style={{
                                         width: '70%'
@@ -325,10 +299,17 @@ class BookRoom extends React.Component {
                                     }}
                                 >
                                     {this.state.listCustomer.map(v =>
-                                        <Option value={v.CustomerID} key={v.CustomerID}>{v.Name}</Option>)
+                                        <Option value={v.id} key={v.id}>{v.name}</Option>)
 
                                     }
-                                </Select>
+                                </Select> */}
+                                <Input
+                                    allowClear
+                                    value={this.state.customerId}
+                                    onChange={(val) => this.setState({ customerId: val.target.value })}
+                                    placeholder="Nhập khách hàng"
+                                    style={{ marginTop: 4, width: '70%' }}
+                                />
                             </Col>
                         </Row>
                         <Row gutter={{
@@ -339,7 +320,7 @@ class BookRoom extends React.Component {
                             <Col md={12} sm={24} xs={24} >
                                 <Button
                                     style={{ margin: '8px 0px' }}
-                                    onClick={() => this.handleSearch()}
+                                    onClick={() => this.getBookRoomByPageOnSearch()}
                                 >
                                     Tìm kiếm
                                     </Button>
@@ -374,38 +355,42 @@ class BookRoom extends React.Component {
                             <Column title="STT" key="index" width={90} align={'Center'}
                                 render={(text, record, index) => (this.state.page) * this.state.size + index + 1}
                             />
-                            <Column title="Mã đặt phòng" dataIndex="BookRoomNo" key="BookRoomNo" align={'Left'}
+                            <Column title="Mã đặt phòng" dataIndex="bookNo" key="bookNo" align={'Left'}
                                 render={(text, record, index) => text}
                             />
-                            <Column title="Khách hàng" dataIndex="CustomerID" key="CustomerID" align={'Left'}
+                            <Column title="Khách hàng" dataIndex="customer" key="customer" align={'Left'}
                                 render={(text, record, index) =>
-                                    record.Customer.Name
+                                    record.customer.name
                                 }
                             />
-                            <Column title="Phòng" dataIndex="Deposit" key="Deposit" align={'Left'}
+                            <Column title="Phòng" dataIndex="rooms" key="rooms" align={'Left'}
                                 render={(text, record, index) =>
-                                    record.Rooms.map(v => <h4>{v.RoomNo}</h4>)
+                                    record.rooms.map(v => <h4>{v.no}</h4>)
                                 }
                             />
-                            <Column title="Ngày đến" dataIndex="StartDate" key="StartDate" align={'Left'}
+                            <Column title="Ngày đến" dataIndex="start_date" key="start_date" align={'Left'}
                                 render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
                             />
-                            <Column title="Ngày đi" dataIndex="EndDate" key="EndDate" align={'Center'}
+                            <Column title="Ngày đi" dataIndex="end_date" key="end_date" align={'Center'}
                                 render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
                             />
-                            <Column title="Ngày tạo" dataIndex="CreateDate" key="CreateDate" align={'Center'}
+                            <Column title="Ngày tạo" dataIndex="created_date" key="created_date" align={'Center'}
                                 render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
                             />
-                            <Column title="Đã hủy" dataIndex="IsCancel" key="IsCancel" align={'Center'}
-                                render={(text, record, index) => text == true ? 'Có' : 'Không'}
-                            />
-                            <Column title="Tiền cọc" dataIndex="Deposit" key="Deposit" align={'Left'}
-                                render={(text, record, index) => text.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') + 'VNĐ'
-
+                            {/* <Column title="Đã hủy" dataIndex="status" key="status" align={'Center'}
+                                render={(text, record, index) => text == 0 ? 'Có' : 'Không'}
+                            /> */}
+                            <Column title="Tiền cọc" dataIndex="deposit" key="deposit" align={'Left'}
+                                render={(text, record, index) => <NumberFormat
+                                    value={text}
+                                    displayType={"text"}
+                                    thousandSeparator={true}
+                                    suffix={' VND'}
+                                />
                                 }
                             />
-                            <Column title="Đã thanh toán" dataIndex="Status" key="Status" align={'Left'}
-                                render={(text, record, index) => text == true ? 'Rồi' : 'Chưa'}
+                            <Column title="Đã thanh toán" dataIndex="status" key="status" align={'Left'}
+                                render={(text, record, index) => text == 1 ? 'Rồi' : 'Chưa'}
                             />
                         </Table>
                     </Spin>

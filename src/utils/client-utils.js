@@ -112,7 +112,7 @@ export default {
                     // Accept: 'application/json',
                     Accept :"application/json, text/plain, */*",
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + this.auth,
+                    // 'Authorization': 'Bearer ' + this.auth,
                     // 'MobileMode':'user'
                 }, dataBody).then(s => {
                     s.json().then(val => {
@@ -177,3 +177,4 @@ export default {
 Number.prototype.formatMoney = function () {
     return this.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
 }
+

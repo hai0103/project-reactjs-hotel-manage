@@ -26,6 +26,11 @@ const { Option } = Select;
 
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 const dateFormat = 'MM-DD-YYYY';
+
+function formatMoney(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
 class Add extends Component {
     constructor(props) {
         super(props);
@@ -41,7 +46,7 @@ class Add extends Component {
             EndDate: moment(new Date()).format('MM-DD-YYYY'),
             CreateDate: moment(new Date()).format('MM-DD-YYYY'),
             CustomerID: '',
-            Deposit: 0,
+            Deposit: '',
             roomId: '',
             RoomID: '',
             listRoomSelected: [],
@@ -61,7 +66,7 @@ class Add extends Component {
         let totalCostRoom = 0;
         let day = 0;
         this.state.listRoomSelected.map(v => {
-            totalCostRoom = totalCostRoom + v.Price;
+            totalCostRoom = totalCostRoom + v.price;
         });
         let date1 = new Date(this.state.StartDate);
         let date2 = new Date(this.state.EndDate);
@@ -96,7 +101,7 @@ class Add extends Component {
             console.log(res)
             if (res.code == 0) {
                 this.setState({
-                    listRoom: res.data.filter(x=>x.StatusStay=="Trống"),
+                    listRoom: res.data.filter(x => x.statusStay == "EMPTY"),
                 })
             }
             else {
@@ -120,23 +125,24 @@ class Add extends Component {
         } = this.state;
 
         let payload = {
-            BookRoomNo,
-            StartDate,
-            EndDate,
-            CreateDate,
-            CustomerID,
-            Deposit
+            bookNo: BookRoomNo,
+            start_date: new Date(StartDate),
+            end_date: new Date(EndDate),
+            created_date: new Date(CreateDate),
+            customerId: CustomerID,
+            deposit: Deposit * 1,
+            status: 0
         }
 
         let listId = [];
-        this.state.listRoomSelected.map(v => listId.push(v.RoomID));
+        this.state.listRoomSelected.map(v => listId.push(v.id));
 
         console.log(payload);
         bookroomProvider.create(payload).then(res => {
             console.log(res)
             if (res.code == 0) {
                 this.setState({
-                    bookroomIDRes: res.data
+                    bookroomIDRes: res.data.id
                 }, () => {
                     bookroomProvider.createDetail(this.state.bookroomIDRes, listId).then(res1 => {
                         console.log(res1)
@@ -155,7 +161,7 @@ class Add extends Component {
                     }).catch(e => {
 
                     });
-                   
+
 
                 });
 
@@ -245,8 +251,9 @@ class Add extends Component {
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Tiền cọc</Text>
                                 <Input
-                                    value={this.state.Deposit}
-                                    placeholder="Nhập số người"
+                                    value={formatMoney(this.state.Deposit)}
+                                    disabled
+                                    placeholder="Số tiền cọc"
                                     style={{ width: '50%' }}
                                     onChange={(val) => this.setState({ Deposit: val.target.value })}
                                 />
@@ -275,7 +282,7 @@ class Add extends Component {
                                     }}
                                 >
                                     {this.state.listCustomer.map(v =>
-                                        <Option value={v.CustomerID} key={v.CustomerID}>{v.Name}</Option>)
+                                        <Option value={v.id} key={v.id}>{v.name}</Option>)
 
                                     }
                                 </Select>
@@ -288,7 +295,7 @@ class Add extends Component {
                                 </Button>
                                 <span style={{ marginLeft: 8 }}>
                                     {this.state.listRoomSelected.map((item, index) =>
-                                        <Typography style={{ margin: '8px 0px' }}>{item.RoomNo}</Typography>
+                                        <Typography style={{ margin: '8px 0px' }}>{item.no}</Typography>
                                     )}
                                 </span>
                             </Col>
@@ -335,18 +342,18 @@ class Add extends Component {
                                 showSearch
                                 allowClear
                                 onChange={(val, e) => {
-                                    if (this.state.listRoomSelected.filter(v => v.RoomID == val).length == 1) {
-                                        this.setState({ listRoomSelected: this.state.listRoomSelected.filter(v => v.RoomID != val) })
+                                    if (this.state.listRoomSelected.filter(v => v.id == val).length == 1) {
+                                        this.setState({ listRoomSelected: this.state.listRoomSelected.filter(v => v.id != val) })
                                     }
                                     else {
-                                        this.state.listRoomSelected.push(this.state.listRoom.filter(v => v.RoomID == val)[0])
+                                        this.state.listRoomSelected.push(this.state.listRoom.filter(v => v.id == val)[0])
                                     }
                                     this.calDeposit();
                                     this.setState({ roomId: val });
                                 }}
                             >
-                                {this.state.listRoom.filter(v => v.StatusStay == 'Trống').map(v =>
-                                    <Option value={v.RoomID} key={v.RoomID}>{v.RoomName}</Option>
+                                {this.state.listRoom.filter(v => v.statusStay == 'EMPTY').map(v =>
+                                    <Option value={v.id} key={v.id}>{v.no}</Option>
                                 )
                                 }
                             </Select>
@@ -357,7 +364,7 @@ class Add extends Component {
                             <Typography style={{ margin: '8px 0px', width: 130 }}>Phòng đã chọn</Typography>
 
                             {this.state.listRoomSelected.map((item, index) =>
-                                <Typography style={{ margin: '8px 0px' }}>{item.RoomNo}</Typography>
+                                <Typography style={{ margin: '8px 0px' }}>{item.no}</Typography>
                             )}
 
                         </Col>

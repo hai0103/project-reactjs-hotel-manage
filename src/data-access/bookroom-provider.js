@@ -3,6 +3,7 @@ import stringUtils from '../resources/stringUtils';
 import constants from '../resources/strings';
 import datacacheProvider from './datacache-provider';
 import clientUtils from '../utils/client-utils';
+import {stringify} from 'querystring';
 
 var md5 = require('md5');
 export default {
@@ -61,28 +62,23 @@ export default {
 
     searchAndPage(param) {
         let parameters =
-            
-        //     (param.pageNumber ? '?pageNumber=' + param.pageNumber : '?pageNumber=' + -0) +
-        //     (param.pageSize ? '&pageSize=' + param.pageSize : '&pageSize=' + 10) +
-        //     (param.customerId? '&customerId='+ param.customerId: '&customerId='+'')+
-        //     (param.bookroomNo? '&bookNo=' + param.bookroomNo:'&bookNo='+'')+
-        //     (param.customerCode? '&customerCode='+param.customerCode:'&customerCode='+'')+
-        //     (param.identity? '&identity='+param.identity:'&identity='+'')
-        // return new Promise((resolve, reject) => {
-        //     clientUtils.requestApi("get", constants.api.bookroom.searchAndPage + parameters, {}).then(x => {
-        //         resolve(x);
-        //     }).catch(e => {
-        //         reject(e);
-        //     })
-        // })
-
-
         (param.pageNumber ? '?pageNumber=' + param.pageNumber : '?pageNumber=' + -0) +
             (param.pageSize ? '&pageSize=' + param.pageSize : '&pageSize=' + 10) +
             '&customerId='+ param.customerId+
             '&bookNo=' + param.bookroomNo+
             '&customerCode='+param.customerCode+
             '&identity='+param.identity
+        return new Promise((resolve, reject) => {
+            clientUtils.requestApi("get", constants.api.bookroom.searchAndPage + parameters, {}).then(x => {
+                resolve(x);
+            }).catch(e => {
+                reject(e);
+            })
+        })
+    },
+
+    searchAndPaging(param) {
+        let parameters = `?${stringify(param)}`
         return new Promise((resolve, reject) => {
             clientUtils.requestApi("get", constants.api.bookroom.searchAndPage + parameters, {}).then(x => {
                 resolve(x);

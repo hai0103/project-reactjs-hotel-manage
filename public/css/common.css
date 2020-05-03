@@ -89,6 +89,10 @@
     background: url(/icon/common-icon.png) no-repeat;
     background-position: -977px -126px;
 }
+.icon-done {
+    background: url(/icon/common-icon.png) no-repeat;
+    background-position: -378px -126px;
+}
 .icon-view {
     background: url(/icon/common-icon.png) no-repeat;
     background-position: -1602px -125px;

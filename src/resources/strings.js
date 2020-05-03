@@ -49,7 +49,7 @@ module.exports = {
             getAll: hotel_service + '/room/all',
             getByPage: hotel_service + '/room/search',
             create: hotel_service + '/room/create',
-            delete: hotel_service + '/room/deletes',
+            delete: hotel_service + '/room/delete',
             searchAndPage: hotel_service + '/room/search'
         }, typeRoom :{
             getAll: hotel_service + '/typeroom/all',
@@ -63,13 +63,13 @@ module.exports = {
             create: hotel_service + '/customer/create',
             update:hotel_service + '/customer/update',
             search: hotel_service +'/customer/search',
-            delete: hotel_service + '/customer/deletes'
+            delete: hotel_service + '/customer/delete'
         }, bookroom: {
             getAll: hotel_service + '/bookroom/all',
             getByPage: hotel_service + '/bookroom/search',
             create: hotel_service + '/bookroom/create',
             createDetail: hotel_service + '/bookroom/create-detail',
-            delete: hotel_service + '/bookroom/deletes',
+            delete: hotel_service + '/bookroom/delete',
             searchAndPage: hotel_service + '/bookroom/search',
             getPerMonth: hotel_service + '/getpermonth'
         }, equipment :{

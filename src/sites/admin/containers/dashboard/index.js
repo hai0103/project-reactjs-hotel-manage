@@ -1,6 +1,6 @@
 import React from 'react'
 import roomProvider from '../../../../data-access/room-provider'
-import bookroomProvider from '../../../../data-access/room-provider'
+import bookroomProvider from '../../../../data-access/bookroom-provider'
 import customerProvider from '../../../../data-access/customer-provider'
 import employeeProvider from '../../../../data-access/employee-provider'
 import './style.css'
@@ -43,13 +43,19 @@ class Dashboard extends React.Component {
             series: [
                 {
                     name: "Số khách hàng",
-                    data: [30, 40, 45, 50, 49, 60, 70, 91, 36, 22, 34, 50]
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                }
+            ],
+            series1: [
+                {
+                    name: "Số đặt phòng",
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 }
             ]
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.getAll();
         this.getAllBook();
         this.getAllCustomer();
@@ -86,6 +92,8 @@ class Dashboard extends React.Component {
         customerProvider.getAll().then(res => {
             this.setState({
                 customer: res.data.length
+            }, () => {
+                this.calCustomerChart(res.data)
             })
         }).catch(e => {
             console.log(e)
@@ -102,6 +110,35 @@ class Dashboard extends React.Component {
             }
         }).catch(e => {
             console.log(e)
+        })
+    }
+
+    calCustomerChart = (listCus) => {
+        const newSeries = [];
+        // let months = this.state.series;
+        // let month = new Date();
+        // listCus.map((item, index) => {
+        //     // console.log(item)
+        //     // debugger
+        //     if (item.created_date !== null) {
+        //         month = new Date(item.created_date)
+        //         // console.log('mon: ' ,month)
+        //         months[0].data[month.getMonth() - 1] = months[0].data[month.getMonth() - 1] + 1;
+        //     }
+        // })
+        // this.setState({ 
+        //     series: months 
+        // }, () => console.log('chart: ', this.state.series))
+        // console.log(months)
+        this.state.series.map((s) => {
+            const data = s.data.map((item, index) => {
+                let count = listCus.filter(value => new Date(value.created_date).getMonth() === index + 1).length
+                return item + count
+            })
+            newSeries.push({ data, name: s.name })
+        })
+        this.setState({
+            series: newSeries
         })
     }
 
@@ -240,33 +277,33 @@ class Dashboard extends React.Component {
                 <Row gutter={{ md: 24, lg: 24, xl: 24 }} style={{ padding: 2, paddingTop: 6 }}>
                     <Col md={18} sm={18} xs={18} style={{}}>
                         {/* <Card bordered={false} style={{ display: 'inline-flex', height: 390 }}> */}
-                            <div style={{ background: '#56d6db47', borderRadius: 10, padding: 14, margin: '2px', marginLeft: 10 }}>
-                                <p className="title-thongke">Số lượng khách hàng theo tháng</p>
-                                <div className="mixed-chart">
-                                    <Chart
-                                        options={this.state.options}
-                                        series={this.state.series}
-                                        type="bar"
-                                        width="95%"
-                                        height="200"
-                                    />
-                                </div>
-
-                            </div>
-                        {/* </Card> */}
-                        {/* </Col>
-                    <Col md={8} sm={8} xs={8} style={{}}> */}
-                        {/* <Card bordered={false} style={{ display: 'inline-flex', height: 390 }}> */}
-                            <div style={{ background: '#56d6db47', borderRadius: 10, padding: 14, margin: '2px', marginLeft: 10 }}>
-                                <p className="title-thongke">Số lượng đặt phòng theo tháng</p>
+                        <div style={{ background: '#56d6db47', borderRadius: 10, padding: 14, margin: '2px', marginLeft: 10 }}>
+                            <p className="title-thongke">Số lượng khách hàng theo tháng</p>
+                            <div className="mixed-chart">
                                 <Chart
                                     options={this.state.options}
                                     series={this.state.series}
-                                    type="line"
+                                    type="bar"
                                     width="95%"
                                     height="200"
                                 />
                             </div>
+
+                        </div>
+                        {/* </Card> */}
+                        {/* </Col>
+                    <Col md={8} sm={8} xs={8} style={{}}> */}
+                        {/* <Card bordered={false} style={{ display: 'inline-flex', height: 390 }}> */}
+                        <div style={{ background: '#56d6db47', borderRadius: 10, padding: 14, margin: '2px', marginLeft: 10 }}>
+                            <p className="title-thongke">Số lượng đặt phòng theo tháng</p>
+                            <Chart
+                                options={this.state.options}
+                                series={this.state.series1}
+                                type="line"
+                                width="95%"
+                                height="200"
+                            />
+                        </div>
                         {/* </Card> */}
                     </Col>
                     {/*                     
@@ -274,14 +311,14 @@ class Dashboard extends React.Component {
                 <Row gutter={{ md: 24, lg: 24, xl: 24 }}> */}
                     <Col md={6} sm={6} xs={6} style={{}}>
                         {/* <Card bordered={false} style={{ display: 'inline-flex', height: 310 }}> */}
-                            <div style={{ background: '#56d6db47', borderRadius: 10, padding: 14, height: 560, margin: '0px', marginRight: 10 }}>
-                                <Title style={{ fontSize: 16, margin: '0px 0px' }}>
-                                    <Icon style={{ fontSize: 26 }} type="bar-chart" />
+                        <div style={{ background: '#56d6db47', borderRadius: 10, padding: 14, height: 560, margin: '0px', marginRight: 10 }}>
+                            <Title style={{ fontSize: 16, margin: '0px 0px' }}>
+                                <Icon style={{ fontSize: 26 }} type="bar-chart" />
                                 Thống kê phòng trống
                                 </Title>
-                                <Text style={{marginTop: 25, display: 'block' }}>Số lượng phòng trống được cập nhật liên tục đúng với thực tế</Text>
-                                <Progress style={{ marginTop: 50, display: 'flex', justifyContent: 'center' }} width={250} type="circle" percent={((this.state.roomEmpty / this.state.room) * 100)} format={percent => `${this.state.roomEmpty + '/' + this.state.room}`} />
-                            </div>
+                            <Text style={{ marginTop: 25, display: 'block' }}>Số lượng phòng trống được cập nhật liên tục đúng với thực tế</Text>
+                            <Progress style={{ marginTop: 50, display: 'flex', justifyContent: 'center' }} width={250} type="circle" percent={((this.state.roomEmpty / this.state.room) * 100)} format={percent => `${this.state.roomEmpty + '/' + this.state.room}`} />
+                        </div>
                         {/* </Card> */}
                     </Col>
                 </Row>

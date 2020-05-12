@@ -62,13 +62,13 @@ class Equipment extends React.Component {
 
     loadPage() {
         this.getAllEquipment();
-        this.getAllDevice();
-        this.getAllRoom();
+        // this.getAllDevice();
+        // this.getAllRoom();
     }
 
     getAllEquipment() {
         this.setState({ progress: true })
-        equipmentProvider.getAll().then(res => {
+        deviceProvider.getAll().then(res => {
             console.log(res)
             if (res.code == 0) {
                 this.setState({
@@ -326,15 +326,15 @@ class Equipment extends React.Component {
                             <Column title="STT" key="index" width={90} align={'Center'}
                                 render={(text, record, index) => (this.state.page) * this.state.size + index + 1}
                             />
-                            <Column title="Tên thiết bị" dataIndex="DeviceID" key="DeviceID" align={'Left'}
+                            <Column title="Tên thiết bị" dataIndex="name" key="name" align={'Left'}
                                 render={(text, record, index) =>
-                                    record.Device.DeviceName
+                                    text
                                 }
                             />
                             <Column title="Phòng" dataIndex="Quantity" key="Quantity" align={'Left'}
-                                render={(text, record, index) => record.Room.RoomName}
+                                render={(text, record, index) => "Chưa có dữ liệu"}
                             />
-                            <Column title="Số lượng" dataIndex="Quantity" key="Quantity" align={'Left'}
+                            <Column title="Số lượng" dataIndex="no" key="no" align={'Left'}
                                 render={(text, record, index) => text}
                             />
 

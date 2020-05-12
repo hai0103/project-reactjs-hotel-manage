@@ -7,6 +7,7 @@ import './style.css'
 import moment from 'moment';
 import ColumnResizer from "react-column-resizer";
 import { toast } from 'react-toastify';
+import NumberFormat from "react-number-format";
 
 // import ModalAddRoom from './create';
 // import ModalDeleteRoom from './delete';
@@ -283,19 +284,25 @@ class Payment extends React.Component {
                             <Column title="STT" key="index" width={90} align={'Center'}
                                 render={(text, record, index) => (this.state.page) * this.state.size + index + 1}
                             />
-                            <Column title="Mã thanh toán" dataIndex="PaymentNo" key="PaymentNo" align={'Left'}
+                            <Column title="Mã thanh toán" dataIndex="no" key="no" align={'Left'}
                                 render={(text, record, index) => text
                                 }
                             />
-                            <Column title="Ngày thanh toán" dataIndex="Date" key="Date" align={'Left'}
+                            <Column title="Ngày thanh toán" dataIndex="created_date" key="created_date" align={'Left'}
                                 render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
                             />
-                            <Column title="Tổng tiền" dataIndex="TotalCost" key="TotalCost" align={'Left'}
-                                render={(text, record, index) => text.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') + 'VNĐ'}
+                            <Column title="Tổng tiền" dataIndex="total_cost" key="total_cost" align={'Left'}
+                                render={(text, record, index) => <NumberFormat
+                                    value={text}
+                                    displayType={"text"}
+                                    thousandSeparator={true}
+                                    suffix={' VND'}
+                                />}
                             />
                             <Column title="Mã đặt phòng" dataIndex="BookRoomID" key="BookRoomID" align={'Left'}
                                 render={(text, record, index) =>
-                                    this.state.listBookRoom.filter(v => v.BookRoomID == record.BookRoomID)[0] ? this.state.listBookRoom.filter(v => v.BookRoomID == record.BookRoomID)[0].BookRoomNo : ''
+                                    // this.state.listBookRoom.filter(v => v.BookRoomID == record.BookRoomID)[0] ? this.state.listBookRoom.filter(v => v.BookRoomID == record.BookRoomID)[0].BookRoomNo : 'Chưa có dữ liệu'
+                                    'Chưa có dữ liệu'
                                 }
                             />
                         </Table>

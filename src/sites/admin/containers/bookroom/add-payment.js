@@ -16,6 +16,7 @@ import {
     Divider
 } from 'antd';
 import { toast } from 'react-toastify';
+import NumberFormat from "react-number-format";
 
 
 const { Title, Text } = Typography;
@@ -33,17 +34,17 @@ class AddPayment extends Component {
 
             PaymentNo: 'TT00',
             Date: new Date(),
-            TotalCost: this.props.listBookRoom ? (this.props.listBookRoom[0].Deposit) / 0.4 : 0,
-            BookRoomID: this.props.listBookRoom ? this.props.listBookRoom[0].BookRoomID : '',
-            BookRoomNo: this.props.listBookRoom ? this.props.listBookRoom[0].BookRoomNo : '',
+            TotalCost: this.props.listBookRoom ? (this.props.listBookRoom[0].deposit) / 0.4 : 0,
+            BookRoomID: this.props.listBookRoom ? this.props.listBookRoom[0].id : '',
+            BookRoomNo: this.props.listBookRoom ? this.props.listBookRoom[0].bookNo : '',
 
 
-            ListRoom: this.props.listBookRoom ? this.props.listBookRoom[0].Rooms : [],
-            CustomerName: this.props.listBookRoom ? this.props.listBookRoom[0].Customer.Name : '',
-            StartDate: this.props.listBookRoom ? moment(this.props.listBookRoom[0].StartDate).format('DD-MM-YYYY') : moment(new Date()).format('DD-MM-YYYY'),
-            EndDate: this.props.listBookRoom ? moment(this.props.listBookRoom[0].EndDate).format('DD-MM-YYYY') : moment(new Date()).format('DD-MM-YYYY'),
+            ListRoom: this.props.listBookRoom ? this.props.listBookRoom[0].rooms : [],
+            CustomerName: this.props.listBookRoom ? this.props.listBookRoom[0].customer.name : '',
+            StartDate: this.props.listBookRoom ? moment(this.props.listBookRoom[0].start_date).format('DD-MM-YYYY') : moment(new Date()).format('DD-MM-YYYY'),
+            EndDate: this.props.listBookRoom ? moment(this.props.listBookRoom[0].end_date).format('DD-MM-YYYY') : moment(new Date()).format('DD-MM-YYYY'),
 
-            Deposit: this.props.listBookRoom ? this.props.listBookRoom[0].Deposit : 0,
+            Deposit: this.props.listBookRoom ? this.props.listBookRoom[0].deposit : 0,
 
             MoneyPay: 0,
 
@@ -139,7 +140,7 @@ class AddPayment extends Component {
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong={true} style={{ margin: '8px 0px', width: 130 }}>Mã phòng</Text>
                                 {this.state.ListRoom.map(v =>
-                                    <Text style={{ margin: '8px 0px', width: 50 }}>{v.RoomNo}</Text>
+                                    <Text style={{ margin: '8px 0px', width: 50 }}>{v.no}</Text>
                                 )}
 
                             </Col>
@@ -180,17 +181,39 @@ class AddPayment extends Component {
                             </Col>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Tổng tiền</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.state.TotalCost}</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>
+                                    <NumberFormat
+                                        value={this.state.TotalCost}
+                                        displayType={"text"}
+                                        thousandSeparator={true}
+                                        suffix={' VND'}
+                                    />
+
+                                </Text>
                             </Col>
                         </Row><Row gutter={{ md: 12, lg: 12, xl: 12 }}>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong={true} style={{ margin: '8px 0px', width: 130 }}>Tiền cọc</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.state.Deposit}</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>
+                                    <NumberFormat
+                                        value={this.state.Deposit}
+                                        displayType={"text"}
+                                        thousandSeparator={true}
+                                        suffix={' VND'}
+                                    />
+                                </Text>
 
                             </Col>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Tiền khách phải trả</Text>
-                                <Text style={{ margin: '8px 0px', width: 130 }}>{this.state.MoneyPay}</Text>
+                                <Text style={{ margin: '8px 0px', width: 130 }}>
+                                    <NumberFormat
+                                        value={this.state.MoneyPay}
+                                        displayType={"text"}
+                                        thousandSeparator={true}
+                                        suffix={' VND'}
+                                    />
+                                </Text>
                             </Col>
                         </Row>
                     </Card>

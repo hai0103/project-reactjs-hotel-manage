@@ -213,7 +213,7 @@ class Add extends Component {
                                 <Text strong style={{ margin: '8px 0px', width: 130 }}>Mã đặt phòng</Text>
                                 <Input
                                     value={this.state.BookRoomNo}
-                                    placeholder="Nhập mã phòng"
+                                    placeholder="Nhập mã đặt phòng. VD: DP0001"
                                     style={{ width: '70%' }}
                                     onChange={(val) => {
                                         this.setState({ BookRoomNo: val.target.value })

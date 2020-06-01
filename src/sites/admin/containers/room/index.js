@@ -424,7 +424,7 @@ class Room extends React.Component {
                             {/* <Column title="Giá" dataIndex="Price" key="Price" align={'Center'}
                             render={(text, record, index) => text}
                         /> */}
-                            <Column title="Loại phòng" dataIndex="typeroom" key="typeroom" align={'Left'}
+                            <Column title="Loại phòng" dataIndex="typeroom" key="typeroom" align={'Center'}
                                 render={(text, record, index) => record.typeroom.description}
                             />
                             <Column title="Trạng thái ở" dataIndex="status" key="status" align={'Center'}

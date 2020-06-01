@@ -78,15 +78,22 @@ class Customer extends React.Component {
     }
 
     getCustomerOnSearch() {
+        console.log("gender: ", this.state.gender);
         this.setState({ progress: true })
         let payload = {
             page: this.state.page,
             size: this.state.size,
-            // customerName: this.state.name,
-            // customerNo: this.state.code,
-            // identityCard: this.state.identity,
-            // gender: this.state.gender
+            customerName: this.state.name,
+            customerNo: this.state.code,
+            identityCard: this.state.identity,
+            gender: this.state.gender
         }
+        if (!this.state.name) delete payload.customerName
+        if (!this.state.code) delete payload.customerNo
+        if (!this.state.identity) delete payload.identityCard
+        if (this.state.gender == null || this.state.gender == '') delete payload.gender
+        console.log(payload);
+
         customerProvider.searchAndPaging(payload).then(res => {
             console.log(res)
             if (res.code == 0) {
@@ -97,8 +104,13 @@ class Customer extends React.Component {
                 })
                 this.setState({ progress: false })
             }
+            else {
+                toast.error('Đã xảy ra lỗi khi lấy dữ liệu. Vui lòng tải lại trang !')
+                this.setState({ progress: false })
+            }
 
         }).catch(e => {
+            toast.error('Đã xảy ra lỗi khi lấy dữ liệu. Vui lòng tải lại trang !')
             console.log(e)
             this.setState({ progress: false })
         })
@@ -281,16 +293,21 @@ class Customer extends React.Component {
                                     onChange={(val) => this.setState({ code: val.target.value })}
                                 />
                             </Col>
-                            <Col md={12} sm={24} xs={24} style={{ display: 'inline-flex' }}>
+                            {/* <Col md={12} sm={24} xs={24} style={{ display: 'inline-flex' }}>
                                 <Typography style={{ margin: '8px 0px', width: 130 }}>Giới tính</Typography>
                                 <Select
-                                    defaultValue=""
+                                    value={this.state.gender}
                                     style={{ width: '70%' }}
-                                    onChange={(val) => { this.setState({ gender: val }) }}>
+                                    onChange={(val) => {
+                                        console.log(val)
+                                        this.setState({ gender: val })
+                                    }}
+                                >
+                                    <Option value=''>Tất cả</Option>
                                     <Option value={true}>Nam</Option>
                                     <Option value={false}>Nữ</Option>
                                 </Select>
-                            </Col>
+                            </Col> */}
                         </Row>
                         <Row gutter={{
                             md: 8,
@@ -345,7 +362,7 @@ class Customer extends React.Component {
                             <Column title="Ngày sinh" key="dob" dataIndex="dob" width={140} align={'Center'}
                                 render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
                             />
-                            <Column title="Giới tính" dataIndex="gender" key="gender" width={100}align={'Center'}
+                            <Column title="Giới tính" dataIndex="gender" key="gender" width={100} align={'Center'}
                                 render={(text, record, index) => text ? 'Nam' : 'Nữ'}
                             />
                             <Column title="Email" dataIndex="email" key="email" align={'Left'}
@@ -357,7 +374,7 @@ class Customer extends React.Component {
                             <Column title="Địa chỉ" dataIndex="address" key="address" align={'Left'}
                                 render={(text, record, index) => text}
                             />
-                            <Column title="Quốc tịch" dataIndex="nationality" key="nationality" align={'Center'}
+                            <Column title="Quốc tịch" dataIndex="nationality" key="nationality" align={'Left'}
                                 render={(text, record, index) => text}
                             />
 
@@ -365,7 +382,7 @@ class Customer extends React.Component {
                     </Spin>
                 </div>
                 {this.state.confirmDialog && <ConfirmDialog title="Xác nhận" content={"Bạn có chắc chắn muốn xóa " + this.state.listUserSelected.length + " khách hàng?"} btnOk="Xác nhận" btnCancel="Hủy" cbFn={this.delete.bind(this)} />}
-                {openAddUpdate && <ModalAddUpdate data={dataCustomer} refresh={this.loadPage.bind(this)} callBackOff={this.closeModal.bind(this)} onHide={() => this.setState({openAddUpdate: false})} />}
+                {openAddUpdate && <ModalAddUpdate data={dataCustomer} refresh={this.loadPage.bind(this)} callBackOff={this.closeModal.bind(this)} onHide={() => this.setState({ openAddUpdate: false })} />}
             </div>
         )
     }

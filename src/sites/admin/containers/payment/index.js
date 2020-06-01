@@ -292,10 +292,10 @@ class Payment extends React.Component {
                                 render={(text, record, index) => record.bookroom.bookNo || 'Chưa có dữ liệu'
                                 }
                             />
-                            <Column title="Ngày thanh toán" dataIndex="created_date" key="created_date" align={'Left'}
+                            <Column title="Ngày thanh toán" dataIndex="created_date" key="created_date" align={'Center'}
                                 render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
                             />
-                            <Column title="Tổng tiền" dataIndex="total_cost" key="total_cost" align={'Left'}
+                            <Column title="Tổng tiền" dataIndex="total_cost" key="total_cost" align={'Right'}
                                 render={(text, record, index) => <NumberFormat
                                     value={text}
                                     displayType={"text"}

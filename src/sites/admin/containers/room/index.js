@@ -176,7 +176,7 @@ class Room extends React.Component {
         }
     }
 
-       
+
     // renderStatus = (status) => {
     //     switch (status) {
     //         case 0:
@@ -321,6 +321,7 @@ class Room extends React.Component {
                                     onChange={(val) => {
                                         this.setState({ typeRoomId: val })
                                     }}>
+                                        <Option value=''>Tất cả</Option>
                                     {this.state.listTypeRoom.map((item, index) =>
                                         <Option value={item.id}>{item.description}</Option>
                                     )}
@@ -343,6 +344,7 @@ class Room extends React.Component {
                                         this.setState({ statusStay: val })
                                     }}
                                 >
+                                    <Option value=''>Tất cả</Option>
                                     <Option value="EMPTY">Trống</Option>
                                     <Option value="USING">Đã có người</Option>
                                 </Select>
@@ -358,6 +360,7 @@ class Room extends React.Component {
                                         this.setState({ status: val })
                                     }}
                                 >
+                                    <Option value=''>Tất cả</Option>
                                     <Option value="CLEAN">Sạch</Option>
                                     <Option value="DIRTY">Bẩn</Option>
                                     <Option value="CLEANING">Đang dọn</Option>

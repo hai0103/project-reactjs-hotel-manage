@@ -293,7 +293,7 @@ class Payment extends React.Component {
                                 }
                             />
                             <Column title="Ngày thanh toán" dataIndex="created_date" key="created_date" align={'Center'}
-                                render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
+                                render={(text, record, index) => moment(text).format('DD-MM-YYYY HH:mm')}
                             />
                             <Column title="Tổng tiền" dataIndex="total_cost" key="total_cost" align={'Right'}
                                 render={(text, record, index) => <NumberFormat

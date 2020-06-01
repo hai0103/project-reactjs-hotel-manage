@@ -68,7 +68,7 @@ class Home extends Component {
                 id: 5,
                 name: "Quản lý khách hàng",
                 url: '/admin/customer',
-                iconClassName: 'icon-employ',
+                iconClassName: 'icon-user',
                 classActiveStyle: 'calendar-working',
             },
             {
@@ -108,8 +108,8 @@ class Home extends Component {
             },
             {
                 id: 11,
-                name: "Khuyến mại",
-                url: '/admin/sale',
+                name: "Bài đăng",
+                url: '/admin/post',
                 iconClassName: 'icon-sale',
                 classActiveStyle: 'calendar-working',
             },

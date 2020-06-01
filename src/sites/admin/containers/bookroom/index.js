@@ -381,19 +381,19 @@ class BookRoom extends React.Component {
                                     record.rooms.map(v => <h4>{v.no}</h4>)
                                 }
                             />
-                            <Column title="Ngày đến" dataIndex="start_date" key="start_date" align={'Left'}
+                            <Column title="Ngày đến" dataIndex="start_date" key="start_date" align={'Center'}
                                 render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
                             />
                             <Column title="Ngày đi" dataIndex="end_date" key="end_date" align={'Center'}
                                 render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
                             />
                             <Column title="Ngày tạo" dataIndex="created_date" key="created_date" align={'Center'}
-                                render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
+                                render={(text, record, index) => moment(text).format('DD-MM-YYYY HH:mm')}
                             />
                             {/* <Column title="Đã hủy" dataIndex="status" key="status" align={'Center'}
                                 render={(text, record, index) => text == 0 ? 'Có' : 'Không'}
                             /> */}
-                            <Column title="Tiền cọc" dataIndex="deposit" key="deposit" align={'Left'}
+                            <Column title="Tiền cọc" dataIndex="deposit" key="deposit" align={'Right'}
                                 render={(text, record, index) => <NumberFormat
                                     value={text}
                                     displayType={"text"}

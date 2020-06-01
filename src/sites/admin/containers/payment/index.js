@@ -288,6 +288,10 @@ class Payment extends React.Component {
                                 render={(text, record, index) => text
                                 }
                             />
+                            <Column title="Mã đặt phòng" dataIndex="bookroom" key="bookroom" align={'Left'}
+                                render={(text, record, index) => record.bookroom.bookNo || 'Chưa có dữ liệu'
+                                }
+                            />
                             <Column title="Ngày thanh toán" dataIndex="created_date" key="created_date" align={'Left'}
                                 render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
                             />
@@ -298,12 +302,6 @@ class Payment extends React.Component {
                                     thousandSeparator={true}
                                     suffix={' VND'}
                                 />}
-                            />
-                            <Column title="Mã đặt phòng" dataIndex="BookRoomID" key="BookRoomID" align={'Left'}
-                                render={(text, record, index) =>
-                                    // this.state.listBookRoom.filter(v => v.BookRoomID == record.BookRoomID)[0] ? this.state.listBookRoom.filter(v => v.BookRoomID == record.BookRoomID)[0].BookRoomNo : 'Chưa có dữ liệu'
-                                    'Chưa có dữ liệu'
-                                }
                             />
                         </Table>
                     </Spin>

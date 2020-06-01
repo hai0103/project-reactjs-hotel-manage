@@ -176,12 +176,28 @@ class Room extends React.Component {
         }
     }
 
+       
+    // renderStatus = (status) => {
+    //     switch (status) {
+    //         case 0:
+    //             return <h6><span className="badge badge-warning">Chưa thanh toán</span></h6>;
+    //         case 1:
+    //             return <h6><span className="badge badge-success">Đã thanh toán</span></h6>;
+    //         case 2:
+    //             return <h6><span className="badge badge-warning">Quá hạn thanh toán</span></h6>;
+    //         default:
+    //             return '';
+    //     }
+    // };
+
     renderStatusStay = (status) => {
         switch (status) {
             case 'EMPTY':
-                return 'Trống';
+                // return 'Trống';
+                return <h6><span className="badge badge-success">Trống</span></h6>;
             case 'USING':
-                return 'Đã có người';
+                // return 'Đã có người';
+                return <h6><span className="badge badge-warning">Đã có người</span></h6>;
             default:
                 return '';
         }
@@ -282,10 +298,9 @@ class Room extends React.Component {
 
                 <div className="filter-data">
                     <Card>
-
                         <Row gutter={{ md: 24, lg: 24, xl: 24 }}>
                             <Col md={12} sm={12} xs={24} style={{ display: 'inline-flex' }}>
-                                <Typography style={{ margin: '8px 0px', width: 130 }}>Mã phòng</Typography>
+                                <Typography style={{ margin: '6px 0px', width: 130 }}>Mã phòng</Typography>
                                 <Input
                                     allowClear
                                     value={this.state.roomNo}

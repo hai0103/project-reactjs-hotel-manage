@@ -81,6 +81,8 @@ class Dashboard extends React.Component {
             if (res.code == 0) {
                 this.setState({
                     bookroom: res.data.length
+                }, () => {
+                    this.calBookChart(res.data)
                 })
             }
         }).catch(e => {
@@ -132,13 +134,43 @@ class Dashboard extends React.Component {
         // console.log(months)
         this.state.series.map((s) => {
             const data = s.data.map((item, index) => {
-                let count = listCus.filter(value => new Date(value.created_date).getMonth() === index + 1).length
+                let count = listCus.filter(value => new Date(value.created_date).getMonth() === index).length
                 return item + count
             })
             newSeries.push({ data, name: s.name })
         })
         this.setState({
             series: newSeries
+        })
+    }
+
+    
+    calBookChart = (listBook) => {
+        const newSeries1 = [];
+        // let months = this.state.series;
+        // let month = new Date();
+        // listCus.map((item, index) => {
+        //     // console.log(item)
+        //     // debugger
+        //     if (item.created_date !== null) {
+        //         month = new Date(item.created_date)
+        //         // console.log('mon: ' ,month)
+        //         months[0].data[month.getMonth() - 1] = months[0].data[month.getMonth() - 1] + 1;
+        //     }
+        // })
+        // this.setState({ 
+        //     series: months 
+        // }, () => console.log('chart: ', this.state.series))
+        // console.log(months)
+        this.state.series1.map((s) => {
+            const data = s.data.map((item, index) => {
+                let count = listBook.filter(value => new Date(value.created_date).getMonth() === index).length
+                return item + count
+            })
+            newSeries1.push({ data, name: s.name })
+        })
+        this.setState({
+            series1: newSeries1
         })
     }
 
@@ -314,10 +346,10 @@ class Dashboard extends React.Component {
                         <div style={{ background: '#56d6db47', borderRadius: 10, padding: 14, height: 560, margin: '0px', marginRight: 10 }}>
                             <Title style={{ fontSize: 16, margin: '0px 0px' }}>
                                 <Icon style={{ fontSize: 26 }} type="bar-chart" />
-                                Thống kê phòng trống
+                                Thống kê phòng sử dụng
                                 </Title>
-                            <Text style={{ marginTop: 25, display: 'block' }}>Số lượng phòng trống được cập nhật liên tục đúng với thực tế</Text>
-                            <Progress style={{ marginTop: 50, display: 'flex', justifyContent: 'center' }} width={250} type="circle" percent={((this.state.roomEmpty / this.state.room) * 100)} format={percent => `${this.state.roomEmpty + '/' + this.state.room}`} />
+                            <Text style={{ marginTop: 25, display: 'block' }}>Số lượng phòng được sử dụng và phòng trống được cập nhật liên tục đúng với thực tế</Text>
+                            <Progress style={{ marginTop: 50, display: 'flex', justifyContent: 'center' }} width={250} type="circle" percent={(((this.state.room - this.state.roomEmpty) / this.state.room) * 100)} format={percent => `${(this.state.room - this.state.roomEmpty) + '/' + this.state.room}`} />
                         </div>
                         {/* </Card> */}
                     </Col>

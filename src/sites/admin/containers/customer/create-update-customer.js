@@ -34,6 +34,7 @@ class ModalAddUpdate extends React.Component {
             nationality: this.props.data&&this.props.data.nationality?this.props.data.nationality:'',
             address : this.props.data&&this.props.data.address?this.props.data.address:'',
             dob: this.props.data &&this.props.data.dob ? this.props.data.dob: new Date(),
+            created_date: this.props.data &&this.props.data.created_date ? this.props.data.created_date: new Date(),
             gender : this.props.data&&this.props.data.gender? this.props.data.gender:'',
             validName:true,
             validNo: true,
@@ -50,6 +51,7 @@ class ModalAddUpdate extends React.Component {
             name : this.state.customerName,
             gender: this.state.gender,
             dob : this.state.dob,
+            created_date: this.state.created_date,
             address: this.state.address,
             phone: this.state.phoneNumber,
             email: this.state.email,
@@ -132,7 +134,7 @@ class ModalAddUpdate extends React.Component {
                     }}
                     footer={
                         [
-                            <Button key="back" onClick={() => this.setState({ showModalAdd: false })}>
+                            <Button key="back" onClick={this.props.onHide}>
                                 Hủy
                                 </Button>,
                             <Button onClick={()=>this.createUpdateCustomer()} type="danger" >

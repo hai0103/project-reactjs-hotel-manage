@@ -71,11 +71,14 @@ class AddPayment extends Component {
         } = this.state;
 
         let payload = {
-            PaymentNo,
-            Date,
-            TotalCost,
-            BookRoomID
+            no: PaymentNo,
+            created_date: Date,
+            total_cost: TotalCost,
+            bookRoomId: BookRoomID
         };
+
+        console.log(payload);
+        
 
         paymentProvider.create(payload).then(res => {
             console.log(res);

@@ -144,6 +144,19 @@ class BookRoom extends React.Component {
         })
     }
 
+    
+    renderStatus = (status) => {
+        switch (status) {
+            case 0:
+                return <h6><span className="badge badge-warning">Chưa thanh toán</span></h6>;
+            case 1:
+                return <h6><span className="badge badge-success">Đã thanh toán</span></h6>;
+            case 2:
+                return <h6><span className="badge badge-warning">Quá hạn thanh toán</span></h6>;
+            default:
+                return '';
+        }
+    };
 
     render() {
 
@@ -389,8 +402,8 @@ class BookRoom extends React.Component {
                                 />
                                 }
                             />
-                            <Column title="Đã thanh toán" dataIndex="status" key="status" align={'Left'}
-                                render={(text, record, index) => text == 1 ? 'Rồi' : 'Chưa'}
+                            <Column title="Trạng thái" dataIndex="status" key="status" align={'Center'}
+                                render={(text, record, index) => this.renderStatus(text)}
                             />
                         </Table>
                     </Spin>

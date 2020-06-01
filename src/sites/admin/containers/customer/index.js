@@ -207,6 +207,7 @@ class Customer extends React.Component {
                             data-toggle="tooltip"
                             data-placement="bottom"
                             title="Ctrl + 3"
+                            onClick={() => this.setState({ openAddUpdate: true, dataCustomer: this.state.dataCustomer2 })}
                         >
                             <span className="toolbar-icon icon-view" />
                             <span>Xem</span>
@@ -330,21 +331,21 @@ class Customer extends React.Component {
                             bordered
                             scroll={{ y: 400 }}
                         >
-                            <Column title="STT" key="index" width={90} align={'Center'}
+                            <Column title="STT" key="index" width={60} align={'Center'}
                                 render={(text, record, index) => (this.state.page) * this.state.size + index + 1}
                             />
 
-                            <Column title="Mã KH" dataIndex="no" key="no" align={'Left'}
+                            <Column title="Mã KH" dataIndex="no" key="no" width={100} align={'Left'}
                                 render={(text, record, index) => text}
                             />
 
-                            <Column title="Tên KH" dataIndex="name" key="name" align={'Left'}
+                            <Column title="Tên KH" dataIndex="name" key="name" width={220} align={'Left'}
                                 render={(text, record, index) => text}
                             />
-                            <Column title="Ngày sinh" key="dob" dataIndex="dob" width={180} align={'Center'}
+                            <Column title="Ngày sinh" key="dob" dataIndex="dob" width={140} align={'Center'}
                                 render={(text, record, index) => moment(text).format('DD-MM-YYYY')}
                             />
-                            <Column title="Giới tính" dataIndex="gender" key="gender" align={'Center'}
+                            <Column title="Giới tính" dataIndex="gender" key="gender" width={100}align={'Center'}
                                 render={(text, record, index) => text ? 'Nam' : 'Nữ'}
                             />
                             <Column title="Email" dataIndex="email" key="email" align={'Left'}
@@ -364,7 +365,7 @@ class Customer extends React.Component {
                     </Spin>
                 </div>
                 {this.state.confirmDialog && <ConfirmDialog title="Xác nhận" content={"Bạn có chắc chắn muốn xóa " + this.state.listUserSelected.length + " khách hàng?"} btnOk="Xác nhận" btnCancel="Hủy" cbFn={this.delete.bind(this)} />}
-                {openAddUpdate && <ModalAddUpdate data={dataCustomer} refresh={this.loadPage.bind(this)} callBackOff={this.closeModal.bind(this)} />}
+                {openAddUpdate && <ModalAddUpdate data={dataCustomer} refresh={this.loadPage.bind(this)} callBackOff={this.closeModal.bind(this)} onHide={() => this.setState({openAddUpdate: false})} />}
             </div>
         )
     }

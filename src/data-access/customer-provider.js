@@ -71,7 +71,7 @@ export default {
     },
     update(id, object) {
         return new Promise((resolve, reject) => {
-            clientUtils.requestApi("post", constants.api.customer.update + '?id=' + id, object).then(x => {
+            clientUtils.requestApi("put", constants.api.customer.update + '?id=' + id, object).then(x => {
                 resolve(x);
             }).catch(e => {
                 reject(e);

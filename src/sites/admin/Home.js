@@ -21,7 +21,7 @@ class Home extends Component {
         super(props);
         this.state = {
             menus: [],
-            activeSideBar:true,
+            activeSideBar: true,
             activeItem: 1,
         }
     }
@@ -141,7 +141,7 @@ class Home extends Component {
         this.setState({ menus: this.getMenu() })
     }
     render() {
-        const {activeItem} = this.state;
+        const { activeItem } = this.state;
         const { classes } = this.props;
         return (
             <div className="app">
@@ -150,23 +150,23 @@ class Home extends Component {
                     <DefaultHeader />
                 </AppHeader> */}
                 <div className="app-body">
-                <div className={this.state.activeSideBar? "sidebar" : "sidebar enactive-sidebar"}>
+                    <div className={this.state.activeSideBar ? "sidebar" : "sidebar enactive-sidebar"}>
                         <div className="scrollbar-container Home-sidebar-1 sidebar-nav ps ps--active-y ps-container">
                             <ul className="nav">
                                 {
-                                    this.state.menus.map((item,index) => {
+                                    this.state.menus.map((item, index) => {
 
                                         if (!(item.subMenu && item.subMenu.length)) {
-                                            return <li 
-                                            key={index} 
-                                            className={"nav-item " + `${activeItem === item.id ? 'nav-item-active' : ''}`}
-                                            onClick={() => this.setState({activeItem: item.id})}
+                                            return <li
+                                                key={index}
+                                                className={"nav-item " + `${activeItem === item.id ? 'nav-item-active' : ''}`}
+                                                onClick={() => this.setState({ activeItem: item.id })}
                                             >
                                                 <NavLink className={'nav-link '} activeclassname="active" to={item.url}>
                                                     <span className={"icon-sidebar" + " " + item.iconClassName} alt={item.name}></span>
                                                     <span>{item.name}</span>
                                                 </NavLink>
-                                                </li>
+                                            </li>
                                         }
                                         return <li key={index} className="nav-item"><a className={'nav-link ' + `${item.classActiveStyle}`} activeclassname="active" onClick={this.openMenu.bind(this, item)}><img src={item.imgUrl} alt="" />{item.name}</a>
                                             {
@@ -189,20 +189,19 @@ class Home extends Component {
                             </ul>
                         </div>
 
-                        <div className={this.state.activeSideBar?"app-side-bar":"app-side-bar enactive-sidebar"}>
-                            {this.state.activeSideBar?
-                            <span  className ="icon-sidebar-foot icon-back" onClick={()=>this.setState({activeSideBar:!this.state.activeSideBar})}>
-                               <i className="fas fa-chevron-left"></i>
-                            </span>
-                            : <span className="icon-sidebar-foot icon-forward" onClick={()=>this.setState({activeSideBar:!this.state.activeSideBar})}>
-                                <i className="fas fa-chevron-right"></i>
-                            </span>
-                        }
-                            
+                        <div className={this.state.activeSideBar ? "app-side-bar" : "app-side-bar enactive-sidebar"}>
+                            {this.state.activeSideBar
+                                ? <span className="icon-sidebar-foot icon-back" onClick={() => this.setState({ activeSideBar: !this.state.activeSideBar })}>
+                                    <i className="fas fa-chevron-left"></i>
+                                </span>
+                                : <span className="icon-sidebar-foot icon-forward" onClick={() => this.setState({ activeSideBar: !this.state.activeSideBar })}>
+                                    <i className="fas fa-chevron-right"></i>
+                                </span>
+                            }
                         </div>
 
                     </div>
-                    <main className={this.state.activeSideBar?"main":"main main-expand"}>
+                    <main className={this.state.activeSideBar ? "main" : "main main-expand"}>
                         {/* <AppBreadcrumb appRoutes={routes} /> */}
                         <Container fluid>
                             <Switch>

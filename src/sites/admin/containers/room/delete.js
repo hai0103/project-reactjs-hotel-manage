@@ -46,7 +46,7 @@ class Delete extends Component {
         } = this.state;
 
         let listId = [];
-        listRoomDelete.map(v => listId.push(v.RoomID));
+        listRoomDelete.map(v => listId.push(v.id));
 
         let payload = listId;
 
@@ -113,7 +113,7 @@ class Delete extends Component {
                 >
                     <Card style={{ padding: 4 }} bordered={false}>
                         <Typography >Bạn có chắc muốn xóa :</Typography>
-                        {this.state.listRoomDelete.map(v => <Typography >{v.RoomName}</Typography>)}
+                        {this.state.listRoomDelete.map(v => <Typography >{v.no}</Typography>)}
                     </Card>
                 </Modal>
 

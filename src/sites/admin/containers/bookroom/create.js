@@ -184,7 +184,7 @@ class Add extends Component {
             <div>
                 <Modal
                     visible={this.state.showModalAdd}
-                    title="Thêm mới phòng"
+                    title="Thêm mới đặt phòng"
                     onCancel={() => {
                         this.handleClose()
                     }
